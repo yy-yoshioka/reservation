@@ -208,11 +208,11 @@ For the 予約管理システム (Reservation Management System), I need to plan
 # Implementation Plan
 
 ## Project Setup and Configuration
-- [ ] Step 1: Project Structure and Type Definitions
+- [x] Step 1: Project Structure and Type Definitions
   - **Task**: Set up the project structure and define TypeScript interfaces for the application
   - **Files**:
-    - src/types/index.ts: Define interfaces for User, Reservation, ReservationDetails, etc.
-    <!-- - src/lib/utils.ts: Create utility functions -->
+    - app/types/index.ts: Define interfaces for User, Reservation, ReservationDetails, etc.
+    - app/lib/utils.ts: Create utility functions
   - **Step Dependencies**: None
   - **User Instructions**: None (using existing starter template)
 
