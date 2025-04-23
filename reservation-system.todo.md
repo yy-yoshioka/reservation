@@ -363,7 +363,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 13, Step 14
   - **User Instructions**: None
 
-- [ ] Step 18: Reservation List Pages
+- [x] Step 18: Reservation List Pages
   - **Task**: Implement reservation list and detail pages
   - **Files**:
     - app/dashboard/reservations/page.tsx: Reservation list page
