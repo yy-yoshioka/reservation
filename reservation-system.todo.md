@@ -284,7 +284,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## API Implementation
-- [ ] Step 9: API Utilities and Error Handling
+- [x] Step 9: API Utilities and Error Handling
   - **Task**: Create API utilities and error handling functions
   - **Files**:
     - app/lib/api.ts: API utility functions
@@ -292,7 +292,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 1
   - **User Instructions**: None
 
-- [ ] Step 10: Reservation API Routes
+- [x] Step 10: Reservation API Routes
   - **Task**: Implement reservation-related API endpoints
   - **Files**:
     - app/api/reservations/route.ts: GET and POST handlers
@@ -300,14 +300,14 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 2, Step 3, Step 9
   - **User Instructions**: None
 
-- [ ] Step 11: Availability API Routes
+- [x] Step 11: Availability API Routes
   - **Task**: Implement availability-related API endpoints
   - **Files**:
     - app/api/availability/route.ts: GET handler for available time slots
   - **Step Dependencies**: Step 2, Step 3, Step 9
   - **User Instructions**: None
 
-- [ ] Step 12: User API Routes
+- [x] Step 12: User API Routes
   - **Task**: Implement user-related API endpoints
   - **Files**:
     - app/api/users/route.ts: GET handler (admin only)
