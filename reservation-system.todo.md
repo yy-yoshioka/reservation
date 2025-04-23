@@ -349,7 +349,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 6, Step 7
   - **User Instructions**: None
 
-- [ ] Step 16: Dashboard Home Page
+- [x] Step 16: Dashboard Home Page
   - **Task**: Implement dashboard home page
   - **Files**:
     - app/dashboard/page.tsx: Dashboard home page
