@@ -317,7 +317,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Calendar Components
-- [ ] Step 13: Calendar Core Components
+- [x] Step 13: Calendar Core Components
   - **Task**: Implement core calendar components
   - **Files**:
     - app/components/calendar/Calendar.tsx: Main calendar component
