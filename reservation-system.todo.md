@@ -380,7 +380,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 7, Step 12
   - **User Instructions**: None
 
-- [ ] Step 20: Admin Pages
+- [x] Step 20: Admin Pages
   - **Task**: Implement admin panel and user management
   - **Files**:
     - app/dashboard/admin/page.tsx: Admin panel
