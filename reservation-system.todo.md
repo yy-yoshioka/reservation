@@ -356,7 +356,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 6, Step 8, Step 13, Step 14
   - **User Instructions**: None
 
-- [ ] Step 17: Calendar View Page
+- [x] Step 17: Calendar View Page
   - **Task**: Implement calendar view page
   - **Files**:
     - app/dashboard/calendar/page.tsx: Calendar view page
