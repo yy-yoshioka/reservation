@@ -329,7 +329,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Reservation Components
-- [ ] Step 14: Reservation Components
+- [x] Step 14: Reservation Components
   - **Task**: Implement reservation-related components
   - **Files**:
     - app/components/reservations/ReservationForm.tsx: Form for creating/editing reservations
