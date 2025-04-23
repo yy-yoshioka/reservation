@@ -340,7 +340,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Page Implementation
-- [ ] Step 15: Landing and Auth Pages
+- [x] Step 15: Landing and Auth Pages
   - **Task**: Enhance landing page and auth pages
   - **Files**:
     - app/page.tsx: Landing page
