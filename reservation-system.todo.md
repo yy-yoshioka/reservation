@@ -373,7 +373,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 14
   - **User Instructions**: None
 
-- [ ] Step 19: Settings Page
+- [x] Step 19: Settings Page
   - **Task**: Implement user settings page
   - **Files**:
     - app/dashboard/settings/page.tsx: User settings page
