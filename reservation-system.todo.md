@@ -217,7 +217,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None (using existing starter template)
 
 ## Database Schema and Security Setup
-- [ ] Step 2: Database Schema Implementation
+- [x] Step 2: Database Schema Implementation
   - **Task**: Create database tables, relationships, and initial seed data
   - **Files**:
     - supabase/migrations/001_initial_schema.sql: SQL for creating tables
@@ -225,7 +225,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 1
   - **User Instructions**: Execute SQL scripts in Supabase dashboard or via CLI
 
-- [ ] Step 3: Row-Level Security Policies
+- [x] Step 3: Row-Level Security Policies
   - **Task**: Implement RLS policies for all tables to enforce access control
   - **Files**:
     - supabase/migrations/002_rls_policies.sql: SQL for RLS policies
@@ -233,7 +233,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: Execute SQL script in Supabase dashboard or via CLI
 
 ## Authentication and Authorization
-- [ ] Step 4: Authentication Context and Hooks
+- [x] Step 4: Authentication Context and Hooks
   - **Task**: Create authentication context and custom hooks for auth state management
   - **Files**:
     - app/contexts/AuthContext.tsx: Auth context provider
@@ -242,7 +242,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 1
   - **User Instructions**: None
 
-- [ ] Step 5: Middleware and Route Protection
+- [x] Step 5: Middleware and Route Protection
   - **Task**: Implement middleware for route protection and role-based access
   - **Files**:
     - app/middleware.ts: Next.js middleware for route protection
@@ -251,16 +251,16 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Core UI Components
-- [ ] Step 6: Layout Components
+- [x] Step 6: Layout Components
   - **Task**: Create reusable layout components
   - **Files**:
     - app/components/layouts/MainLayout.tsx: Main application layout
-    - app/components/layouts/DashboardLayout.tsx: Dashboard-s 7pecific layout
+    - app/components/layouts/DashboardLayout.tsx: Dashboard-specific layout
     - app/components/layouts/AuthLayout.tsx: Layout for auth pages
   - **Step Dependencies**: Step 4
   - **User Instructions**: None
 
-- [ ] Step 7: Basic UI Components
+- [x] Step 7: Basic UI Components
   - **Task**: Create reusable UI components
   - **Files**:
     - app/components/ui/Button.tsx: Button component with variants
@@ -273,7 +273,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **Step Dependencies**: Step 1
   - **User Instructions**: None
 
-- [ ] Step 8: Navigation Components
+- [x] Step 8: Navigation Components
   - **Task**: Create navigation components
   - **Files**:
     - app/components/navigation/Navbar.tsx: Top navigation bar
