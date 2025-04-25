@@ -1,6 +1,6 @@
 import { createClient } from "@/app/lib/supabase/server";
 import { withErrorHandling } from "@/app/lib/server-error";
-import { ValidationError } from "@/app/lib/error";
+import { ValidationError } from "@/app/lib/errors/common";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/availability - Get available time slots

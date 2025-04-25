@@ -101,5 +101,5 @@ export function validateRequired(
   }
 }
 
-// Re-export error classes
+// Re-export error classes for backward compatibility
 export { ApiError, ValidationError, AuthError, NotFoundError };

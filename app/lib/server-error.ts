@@ -1,6 +1,11 @@
 // Server-side error handling utilities - no 'use client' directive
 
-import { ApiError, ValidationError, AuthError, NotFoundError } from "./error";
+import {
+  ApiError,
+  ValidationError,
+  AuthError,
+  NotFoundError,
+} from "@/app/lib/errors/common";
 import { NextResponse } from "next/server";
 
 /**

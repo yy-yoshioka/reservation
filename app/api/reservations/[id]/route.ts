@@ -1,5 +1,5 @@
 import { createClient } from '@/app/lib/supabase/server';
-import { withErrorHandling, ValidationError, AuthError, NotFoundError } from '@/app/lib/error';
+import { withErrorHandling, ValidationError, AuthError, NotFoundError } from '@/app/lib/errors/common';
 import { getUser } from '@/app/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
