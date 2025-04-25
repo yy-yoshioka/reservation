@@ -4,7 +4,7 @@ export interface User {
   email: string;
   first_name: string;
   last_name: string;
-  role: 'admin' | 'staff' | 'customer';
+  role: "admin" | "staff" | "customer";
   phone?: string;
   created_at: string;
   updated_at: string;
@@ -19,7 +19,7 @@ export interface Reservation {
   end_time: string;
   customer_id: string;
   created_by: string;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  status: "pending" | "confirmed" | "cancelled" | "completed";
   created_at: string;
   updated_at: string;
 }
@@ -58,4 +58,5 @@ export interface ReservationFormData {
   special_requests?: string;
   number_of_people?: number;
   additional_notes?: string;
+  customer_id?: string; // ID of customer for admin-created reservations
 }

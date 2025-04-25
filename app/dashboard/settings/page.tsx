@@ -1,58 +1,62 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import DashboardLayout from '@/app/components/layouts/DashboardLayout';
-import Button from '@/app/components/ui/Button';
-import Input from '@/app/components/ui/Input';
-import Card from '@/app/components/ui/Card';
-import Alert from '@/app/components/ui/Alert';
-import { useAuth } from '@/app/hooks/useAuth';
-import { useUser } from '@/app/hooks/useUser';
+import { useEffect, useState } from "react";
+import DashboardLayout from "@/app/components/layouts/DashboardLayout";
+import Button from "@/app/components/ui/Button";
+import Input from "@/app/components/ui/Input";
+import Card from "@/app/components/ui/Card";
+import Alert from "@/app/components/ui/Alert";
+import { useAuth } from "@/app/hooks/useAuth";
+import { useUser } from "@/app/hooks/useUser";
 
 export default function SettingsPage() {
   const { user } = useAuth();
-  const { getUserProfile, updateUserProfile, isLoading: userLoading } = useUser();
-  
+  const {
+    getUserProfile,
+    updateUserProfile,
+    isLoading: userLoading,
+  } = useUser();
+
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
   });
-  
+
   const [passwordForm, setPasswordForm] = useState({
-    current_password: '',
-    new_password: '',
-    confirm_password: '',
+    current_password: "",
+    new_password: "",
+    confirm_password: "",
   });
-  
+
   const [formLoading, setFormLoading] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  
+
   // Fetch user profile data on component mount
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (user) {
         const userProfile = await getUserProfile();
-        
+
         if (userProfile) {
           setFormData({
-            first_name: userProfile.first_name || '',
-            last_name: userProfile.last_name || '',
-            email: user.email || '',
-            phone: userProfile.phone || '',
+            first_name: userProfile.first_name || "",
+            last_name: userProfile.last_name || "",
+            email: user.email || "",
+            phone: userProfile.phone || "",
           });
         }
       }
     };
-    
+
     fetchUserProfile();
-  }, [user, getUserProfile]);
-  
+  }, [user]);
+
   // Handle profile form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -61,7 +65,7 @@ export default function SettingsPage() {
       [name]: value,
     }));
   };
-  
+
   // Handle password form input changes
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -70,84 +74,88 @@ export default function SettingsPage() {
       [name]: value,
     }));
   };
-  
+
   // Handle profile form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormLoading(true);
     setSuccess(null);
     setError(null);
-    
+
     try {
       const result = await updateUserProfile({
         first_name: formData.first_name,
         last_name: formData.last_name,
         phone: formData.phone,
       });
-      
+
       if (result.success) {
-        setSuccess('Profile updated successfully');
+        setSuccess("Profile updated successfully");
       } else {
-        setError(result.error || 'Failed to update profile');
+        setError(result.error || "Failed to update profile");
       }
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred');
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setError(errorMessage);
     } finally {
       setFormLoading(false);
     }
   };
-  
+
   // Handle password form submission
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordLoading(true);
     setPasswordSuccess(null);
     setPasswordError(null);
-    
+
     // Validate passwords
     if (passwordForm.new_password !== passwordForm.confirm_password) {
-      setPasswordError('Passwords do not match');
+      setPasswordError("Passwords do not match");
       setPasswordLoading(false);
       return;
     }
-    
+
     if (passwordForm.new_password.length < 8) {
-      setPasswordError('Password must be at least 8 characters long');
+      setPasswordError("Password must be at least 8 characters long");
       setPasswordLoading(false);
       return;
     }
-    
+
     try {
-      const response = await fetch('/api/me/password', {
-        method: 'PUT',
+      const response = await fetch("/api/me/password", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           current_password: passwordForm.current_password,
           new_password: passwordForm.new_password,
         }),
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
-        setPasswordSuccess('Password updated successfully');
+        setPasswordSuccess("Password updated successfully");
         setPasswordForm({
-          current_password: '',
-          new_password: '',
-          confirm_password: '',
+          current_password: "",
+          new_password: "",
+          confirm_password: "",
         });
       } else {
-        setPasswordError(data.error || 'Failed to update password');
+        setPasswordError(data.error || "Failed to update password");
       }
-    } catch (err: any) {
-      setPasswordError(err.message || 'An unexpected error occurred');
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unexpected error occurred";
+      setPasswordError(errorMessage);
     } finally {
       setPasswordLoading(false);
     }
   };
-  
+
   return (
     <DashboardLayout>
       <div className="mb-6">
@@ -156,14 +164,14 @@ export default function SettingsPage() {
           Manage your account settings and change your password.
         </p>
       </div>
-      
+
       <div className="grid gap-6 md:grid-cols-2">
         {/* Profile Information */}
         <Card>
           <Card.Header>
             <Card.Title>Profile Information</Card.Title>
           </Card.Header>
-          
+
           <Card.Content>
             {success && (
               <Alert
@@ -174,7 +182,7 @@ export default function SettingsPage() {
                 {success}
               </Alert>
             )}
-            
+
             {error && (
               <Alert
                 variant="error"
@@ -184,7 +192,7 @@ export default function SettingsPage() {
                 {error}
               </Alert>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <Input
@@ -194,7 +202,7 @@ export default function SettingsPage() {
                   onChange={handleInputChange}
                   required
                 />
-                
+
                 <Input
                   label="Last Name"
                   name="last_name"
@@ -203,7 +211,7 @@ export default function SettingsPage() {
                   required
                 />
               </div>
-              
+
               <Input
                 label="Email"
                 type="email"
@@ -212,32 +220,29 @@ export default function SettingsPage() {
                 disabled
                 helperText="Email cannot be changed"
               />
-              
+
               <Input
                 label="Phone Number"
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
               />
-              
+
               <div className="flex justify-end">
-                <Button
-                  type="submit"
-                  isLoading={formLoading || userLoading}
-                >
+                <Button type="submit" isLoading={formLoading || userLoading}>
                   Save Changes
                 </Button>
               </div>
             </form>
           </Card.Content>
         </Card>
-        
+
         {/* Change Password */}
         <Card>
           <Card.Header>
             <Card.Title>Change Password</Card.Title>
           </Card.Header>
-          
+
           <Card.Content>
             {passwordSuccess && (
               <Alert
@@ -248,7 +253,7 @@ export default function SettingsPage() {
                 {passwordSuccess}
               </Alert>
             )}
-            
+
             {passwordError && (
               <Alert
                 variant="error"
@@ -258,7 +263,7 @@ export default function SettingsPage() {
                 {passwordError}
               </Alert>
             )}
-            
+
             <form onSubmit={handlePasswordSubmit} className="space-y-4">
               <Input
                 label="Current Password"
@@ -268,7 +273,7 @@ export default function SettingsPage() {
                 onChange={handlePasswordChange}
                 required
               />
-              
+
               <Input
                 label="New Password"
                 type="password"
@@ -278,7 +283,7 @@ export default function SettingsPage() {
                 helperText="Password must be at least 8 characters long"
                 required
               />
-              
+
               <Input
                 label="Confirm New Password"
                 type="password"
@@ -287,34 +292,32 @@ export default function SettingsPage() {
                 onChange={handlePasswordChange}
                 required
               />
-              
+
               <div className="flex justify-end">
-                <Button
-                  type="submit"
-                  isLoading={passwordLoading}
-                >
+                <Button type="submit" isLoading={passwordLoading}>
                   Update Password
                 </Button>
               </div>
             </form>
           </Card.Content>
         </Card>
-        
+
         {/* Account Danger Zone */}
         <Card className="md:col-span-2">
           <Card.Header>
             <Card.Title>Danger Zone</Card.Title>
           </Card.Header>
-          
+
           <Card.Content>
             <div className="border border-red-200 rounded-md p-4">
-              <h3 className="text-lg font-medium text-red-600 mb-2">Delete Account</h3>
-              <p className="text-gray-700 mb-4">
-                Once you delete your account, there is no going back. Please be certain.
-              </p>
-              <Button variant="danger">
+              <h3 className="text-lg font-medium text-red-600 mb-2">
                 Delete Account
-              </Button>
+              </h3>
+              <p className="text-gray-700 mb-4">
+                Once you delete your account, there is no going back. Please be
+                certain.
+              </p>
+              <Button variant="danger">Delete Account</Button>
             </div>
           </Card.Content>
         </Card>
