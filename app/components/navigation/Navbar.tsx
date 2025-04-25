@@ -11,11 +11,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  
+
   const handleSignOut = async () => {
     await signOut();
   };
-  
+
   return (
     <nav className="bg-white border-b">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,51 +30,51 @@ export default function Navbar() {
               <Link
                 href="/"
                 className={cn(
-                  "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
-                  pathname === "/"
-                    ? "border-blue-500 text-gray-900"
-                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+                  pathname === '/'
+                    ? 'border-blue-500 text-gray-900'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
                 )}
               >
                 Home
               </Link>
-              
+
               {user && (
                 <Link
                   href="/dashboard"
                   className={cn(
-                    "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
-                    pathname.startsWith("/dashboard")
-                      ? "border-blue-500 text-gray-900"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+                    pathname.startsWith('/dashboard')
+                      ? 'border-blue-500 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
                   )}
                 >
                   Dashboard
                 </Link>
               )}
-              
+
               {user && (
                 <Link
                   href="/dashboard/reservations"
                   className={cn(
-                    "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
-                    pathname.startsWith("/dashboard/reservations")
-                      ? "border-blue-500 text-gray-900"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+                    pathname.startsWith('/dashboard/reservations')
+                      ? 'border-blue-500 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
                   )}
                 >
                   Reservations
                 </Link>
               )}
-              
+
               {user && role === 'admin' && (
                 <Link
                   href="/dashboard/admin"
                   className={cn(
-                    "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
-                    pathname.startsWith("/dashboard/admin")
-                      ? "border-blue-500 text-gray-900"
-                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+                    pathname.startsWith('/dashboard/admin')
+                      ? 'border-blue-500 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
                   )}
                 >
                   Admin
@@ -82,7 +82,7 @@ export default function Navbar() {
               )}
             </div>
           </div>
-          
+
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {user ? (
               <div className="ml-3 relative">
@@ -101,7 +101,7 @@ export default function Navbar() {
                     </div>
                   </button>
                 </div>
-                
+
                 {isUserMenuOpen && (
                   <div
                     className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -109,10 +109,8 @@ export default function Navbar() {
                     aria-orientation="vertical"
                     aria-labelledby="user-menu"
                   >
-                    <div className="px-4 py-2 text-xs text-gray-500">
-                      {user.email}
-                    </div>
-                    
+                    <div className="px-4 py-2 text-xs text-gray-500">{user.email}</div>
+
                     <Link
                       href="/dashboard/settings"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -121,7 +119,7 @@ export default function Navbar() {
                     >
                       Settings
                     </Link>
-                    
+
                     <button
                       className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       role="menuitem"
@@ -152,7 +150,7 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          
+
           <div className="-mr-2 flex items-center sm:hidden">
             <button
               type="button"
@@ -162,81 +160,93 @@ export default function Navbar() {
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                className={cn("h-6 w-6", isMenuOpen ? "hidden" : "block")}
+                className={cn('h-6 w-6', isMenuOpen ? 'hidden' : 'block')}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
               <svg
-                className={cn("h-6 w-6", isMenuOpen ? "block" : "hidden")}
+                className={cn('h-6 w-6', isMenuOpen ? 'block' : 'hidden')}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
         </div>
       </div>
-      
-      <div className={cn("sm:hidden", isMenuOpen ? "block" : "hidden")}>
+
+      <div className={cn('sm:hidden', isMenuOpen ? 'block' : 'hidden')}>
         <div className="pt-2 pb-3 space-y-1">
           <Link
             href="/"
             className={cn(
-              "block pl-3 pr-4 py-2 border-l-4 text-base font-medium",
-              pathname === "/"
-                ? "bg-blue-50 border-blue-500 text-blue-700"
-                : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+              'block pl-3 pr-4 py-2 border-l-4 text-base font-medium',
+              pathname === '/'
+                ? 'bg-blue-50 border-blue-500 text-blue-700'
+                : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
             )}
             onClick={() => setIsMenuOpen(false)}
           >
             Home
           </Link>
-          
+
           {user && (
             <>
               <Link
                 href="/dashboard"
                 className={cn(
-                  "block pl-3 pr-4 py-2 border-l-4 text-base font-medium",
-                  pathname.startsWith("/dashboard") && !pathname.startsWith("/dashboard/reservations") && !pathname.startsWith("/dashboard/admin")
-                    ? "bg-blue-50 border-blue-500 text-blue-700"
-                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  'block pl-3 pr-4 py-2 border-l-4 text-base font-medium',
+                  pathname.startsWith('/dashboard') &&
+                    !pathname.startsWith('/dashboard/reservations') &&
+                    !pathname.startsWith('/dashboard/admin')
+                    ? 'bg-blue-50 border-blue-500 text-blue-700'
+                    : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
                 )}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Dashboard
               </Link>
-              
+
               <Link
                 href="/dashboard/reservations"
                 className={cn(
-                  "block pl-3 pr-4 py-2 border-l-4 text-base font-medium",
-                  pathname.startsWith("/dashboard/reservations")
-                    ? "bg-blue-50 border-blue-500 text-blue-700"
-                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  'block pl-3 pr-4 py-2 border-l-4 text-base font-medium',
+                  pathname.startsWith('/dashboard/reservations')
+                    ? 'bg-blue-50 border-blue-500 text-blue-700'
+                    : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
                 )}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Reservations
               </Link>
-              
+
               {role === 'admin' && (
                 <Link
                   href="/dashboard/admin"
                   className={cn(
-                    "block pl-3 pr-4 py-2 border-l-4 text-base font-medium",
-                    pathname.startsWith("/dashboard/admin")
-                      ? "bg-blue-50 border-blue-500 text-blue-700"
-                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    'block pl-3 pr-4 py-2 border-l-4 text-base font-medium',
+                    pathname.startsWith('/dashboard/admin')
+                      ? 'bg-blue-50 border-blue-500 text-blue-700'
+                      : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
                   )}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -246,7 +256,7 @@ export default function Navbar() {
             </>
           )}
         </div>
-        
+
         {user ? (
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-4">

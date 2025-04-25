@@ -23,54 +23,43 @@ export default function Breadcrumbs({
   capitalizeLinks = true,
 }: BreadcrumbProps) {
   const pathname = usePathname();
-  
+
   const breadcrumbs = useMemo(() => {
     // Remove any query parameters
     const asPathWithoutQuery = pathname.split('?')[0];
-    
+
     // Split and remove empty items
-    const asPathNestedRoutes = asPathWithoutQuery
-      .split('/')
-      .filter(v => v.length > 0);
-    
+    const asPathNestedRoutes = asPathWithoutQuery.split('/').filter((v) => v.length > 0);
+
     // Map to create breadcrumb items for rendering
     const crumblist = asPathNestedRoutes.map((subpath, idx) => {
       // Create the href for the crumb
       const href = '/' + asPathNestedRoutes.slice(0, idx + 1).join('/');
-      
+
       // Format the text
-      let text = capitalizeLinks
-        ? subpath.charAt(0).toUpperCase() + subpath.slice(1)
-        : subpath;
-      
+      let text = capitalizeLinks ? subpath.charAt(0).toUpperCase() + subpath.slice(1) : subpath;
+
       // Replace hyphens and underscores with spaces
       text = text.replace(/[-_]/g, ' ');
-      
+
       return { href, text };
     });
-    
+
     // Add the home page at the beginning
     return [{ href: '/', text: homeElement }, ...crumblist];
   }, [pathname, homeElement, capitalizeLinks]);
-  
+
   return (
     <nav aria-label="breadcrumbs" className={cn('py-3', containerClasses)}>
       <ol className={cn('flex items-center space-x-2', listClasses)}>
         {breadcrumbs.map((crumb, idx) => (
           <li key={idx} className={cn('flex items-center')}>
-            {idx > 0 && (
-              <span className="mx-2 text-gray-400">{separator}</span>
-            )}
-            
+            {idx > 0 && <span className="mx-2 text-gray-400">{separator}</span>}
+
             {idx === breadcrumbs.length - 1 ? (
-              <span className={cn('font-medium', activeClasses)}>
-                {crumb.text}
-              </span>
+              <span className={cn('font-medium', activeClasses)}>{crumb.text}</span>
             ) : (
-              <Link
-                href={crumb.href}
-                className="text-gray-600 hover:text-gray-900"
-              >
+              <Link href={crumb.href} className="text-gray-600 hover:text-gray-900">
                 {crumb.text}
               </Link>
             )}

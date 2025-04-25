@@ -18,17 +18,14 @@ export interface ReservationFilters {
   onlyMine?: boolean;
 }
 
-export default function ReservationFilter({
-  onFilterChange,
-  className,
-}: ReservationFilterProps) {
+export default function ReservationFilter({ onFilterChange, className }: ReservationFilterProps) {
   const [filters, setFilters] = useState<ReservationFilters>({
     status: '',
     startDate: '',
     endDate: '',
     onlyMine: false,
   });
-  
+
   // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -37,7 +34,7 @@ export default function ReservationFilter({
       [name]: value,
     }));
   };
-  
+
   // Handle checkbox changes
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
@@ -46,12 +43,12 @@ export default function ReservationFilter({
       [name]: checked,
     }));
   };
-  
+
   // Apply filters
   const applyFilters = () => {
     onFilterChange(filters);
   };
-  
+
   // Reset filters
   const resetFilters = () => {
     const resetValues = {
@@ -63,11 +60,11 @@ export default function ReservationFilter({
     setFilters(resetValues);
     onFilterChange(resetValues);
   };
-  
+
   return (
-    <div className={cn("bg-white border rounded-md p-4 mb-6", className)}>
+    <div className={cn('bg-white border rounded-md p-4 mb-6', className)}>
       <h3 className="text-lg font-medium mb-4">Filter Reservations</h3>
-      
+
       <div className="grid gap-4 mb-4 md:grid-cols-3">
         <Select
           label="Status"
@@ -82,7 +79,7 @@ export default function ReservationFilter({
             { value: 'completed', label: 'Completed' },
           ]}
         />
-        
+
         <Input
           label="Start Date"
           name="startDate"
@@ -90,7 +87,7 @@ export default function ReservationFilter({
           value={filters.startDate}
           onChange={handleInputChange}
         />
-        
+
         <Input
           label="End Date"
           name="endDate"
@@ -99,7 +96,7 @@ export default function ReservationFilter({
           onChange={handleInputChange}
         />
       </div>
-      
+
       <div className="flex items-center mb-4">
         <input
           id="onlyMine"
@@ -113,14 +110,12 @@ export default function ReservationFilter({
           Show only my reservations
         </label>
       </div>
-      
+
       <div className="flex justify-end space-x-2">
         <Button variant="outline" onClick={resetFilters}>
           Reset
         </Button>
-        <Button onClick={applyFilters}>
-          Apply Filters
-        </Button>
+        <Button onClick={applyFilters}>Apply Filters</Button>
       </div>
     </div>
   );

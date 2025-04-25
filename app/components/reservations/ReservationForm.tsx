@@ -1,37 +1,32 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ReservationFormData, User } from "@/app/types";
-import Button from "@/app/components/ui/Button";
-import Input from "@/app/components/ui/Input";
-import Select from "@/app/components/ui/Select";
-import Alert from "@/app/components/ui/Alert";
-import Calendar from "@/app/components/calendar/Calendar";
-import { useAuth } from "@/app/hooks/useAuth";
+import { useState, useEffect } from 'react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ReservationFormData, User } from '@/app/types';
+import Button from '@/app/components/ui/Button';
+import Input from '@/app/components/ui/Input';
+import Select from '@/app/components/ui/Select';
+import Alert from '@/app/components/ui/Alert';
+import Calendar from '@/app/components/calendar/Calendar';
+import { useAuth } from '@/app/hooks/useAuth';
 
 export interface ReservationFormProps {
   initialData?: Partial<ReservationFormData>;
-  onSubmit: (
-    data: ReservationFormData
-  ) => Promise<{ success: boolean; error?: string }>;
+  onSubmit: (data: ReservationFormData) => Promise<{ success: boolean; error?: string }>;
   availableTimeSlots: Array<{ start: string; end: string }>;
   customers?: User[];
   isLoading?: boolean;
 }
 
 const ReservationSchema = z.object({
-  title: z.string().min(3, "Title is required"),
+  title: z.string().min(3, 'Title is required'),
   description: z.string().optional(),
   customer_id: z.string().optional(),
-  start_time: z.string().min(1, "Start time is required"),
-  end_time: z.string().min(1, "End time is required"),
-  number_of_people: z.coerce
-    .number()
-    .int()
-    .min(1, "At least 1 person is required"),
+  start_time: z.string().min(1, 'Start time is required'),
+  end_time: z.string().min(1, 'End time is required'),
+  number_of_people: z.coerce.number().int().min(1, 'At least 1 person is required'),
 });
 
 export default function ReservationForm({
@@ -59,12 +54,12 @@ export default function ReservationForm({
   } = useForm<ReservationFormData>({
     resolver: zodResolver(ReservationSchema) as any,
     defaultValues: {
-      title: initialData.title || "",
-      description: initialData.description || "",
-      start_time: initialData.start_time || "",
-      end_time: initialData.end_time || "",
+      title: initialData.title || '',
+      description: initialData.description || '',
+      start_time: initialData.start_time || '',
+      end_time: initialData.end_time || '',
       number_of_people: initialData.number_of_people || 1,
-      customer_id: initialData.customer_id || "",
+      customer_id: initialData.customer_id || '',
     },
   });
 
@@ -87,8 +82,8 @@ export default function ReservationForm({
       start,
       end,
     });
-    setValue("start_time", start);
-    setValue("end_time", end);
+    setValue('start_time', start);
+    setValue('end_time', end);
   };
 
   const onFormSubmit = async (data: any) => {
@@ -99,7 +94,7 @@ export default function ReservationForm({
       const result = await onSubmit(data as ReservationFormData);
 
       if (!result.success) {
-        setSubmitError(result.error || "Failed to create reservation");
+        setSubmitError(result.error || 'Failed to create reservation');
         return;
       }
 
@@ -107,21 +102,14 @@ export default function ReservationForm({
       reset();
       setSelectedSlot(null);
     } catch (error: unknown) {
-      setSubmitError(
-        error instanceof Error ? error.message : "An unexpected error occurred"
-      );
+      setSubmitError(error instanceof Error ? error.message : 'An unexpected error occurred');
     }
   };
 
   return (
     <div>
       {submitError && (
-        <Alert
-          variant="error"
-          title="Error"
-          className="mb-6"
-          onClose={() => setSubmitError(null)}
-        >
+        <Alert variant="error" title="Error" className="mb-6" onClose={() => setSubmitError(null)}>
           {submitError}
         </Alert>
       )}
@@ -154,9 +142,7 @@ export default function ReservationForm({
                 />
               </div>
               {errors.start_time && (
-                <p className="text-sm text-red-600 mt-1">
-                  {errors.start_time.message}
-                </p>
+                <p className="text-sm text-red-600 mt-1">{errors.start_time.message}</p>
               )}
             </div>
 
@@ -167,37 +153,33 @@ export default function ReservationForm({
               <Input
                 type="number"
                 min="1"
-                {...register("number_of_people")}
+                {...register('number_of_people')}
                 error={errors.number_of_people?.message}
               />
             </div>
           </div>
 
           <div className="space-y-6">
-            {role === "admin" && (
+            {role === 'admin' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Customer
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
                 <Select
                   options={customers.map((customer) => ({
                     value: customer.id,
                     label: `${customer.first_name} ${customer.last_name} (${customer.email})`,
                   }))}
-                  {...register("customer_id")}
+                  {...register('customer_id')}
                   error={errors.customer_id?.message}
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Title
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
               <Input
                 type="text"
                 placeholder="e.g., Business Meeting"
-                {...register("title")}
+                {...register('title')}
                 error={errors.title?.message}
               />
             </div>
@@ -210,12 +192,10 @@ export default function ReservationForm({
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 rows={4}
                 placeholder="Add any notes or special requests"
-                {...register("description")}
+                {...register('description')}
               />
               {errors.description && (
-                <p className="text-sm text-red-600 mt-1">
-                  {errors.description.message}
-                </p>
+                <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>
               )}
             </div>
           </div>

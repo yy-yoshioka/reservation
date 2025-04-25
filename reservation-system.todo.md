@@ -18,6 +18,7 @@
 - /dashboard/admin/users (User Management - for admin users only)
 
 ## ✅ API Endpoints
+
 - GET /api/reservations - Get all reservations (with filtering options)
 - GET /api/reservations/[id] - Get a specific reservation
 - POST /api/reservations - Create a new reservation
@@ -31,11 +32,11 @@
 - PUT /api/me - Update current user profile
 
 ## ✅ Reusable Components
+
 - Layout Components:
   - MainLayout (includes navigation, header, footer)
   - DashboardLayout (dashboard-specific layout)
   - AuthLayout (for login/signup pages)
-  
 - UI Components:
   - Button (primary, secondary, danger variants)
   - Input (text, email, password, date, time)
@@ -44,25 +45,21 @@
   - Alert (success, error, warning, info)
   - Card (for displaying information)
   - Badge (for status indicators)
-  
 - Calendar Components:
   - Calendar (main calendar component)
   - CalendarDay (single day view)
   - CalendarWeek (week view)
   - CalendarMonth (month view)
   - TimeSlot (individual time slot)
-  
 - Reservation Components:
   - ReservationForm (create/edit reservation)
   - ReservationList (list of reservations)
   - ReservationCard (individual reservation display)
   - ReservationFilter (filter options for reservations)
-  
 - Authentication Components:
   - LoginForm
   - SignupForm
   - PasswordResetForm
-  
 - Navigation Components:
   - Navbar
   - Sidebar
@@ -74,6 +71,7 @@
 ### Tables
 
 1. **users**
+
    - id: uuid (primary key)
    - email: string (unique)
    - password: string (hashed)
@@ -85,6 +83,7 @@
    - updated_at: timestamp
 
 2. **reservations**
+
    - id: uuid (primary key)
    - title: string
    - description: text (nullable)
@@ -97,6 +96,7 @@
    - updated_at: timestamp
 
 3. **reservation_details**
+
    - id: uuid (primary key)
    - reservation_id: uuid (foreign key to reservations.id)
    - special_requests: text (nullable)
@@ -113,6 +113,7 @@
    - updated_at: timestamp
 
 ### Relationships
+
 - A user can have many reservations (as a customer)
 - A user can create many reservations (as staff/admin)
 - A reservation belongs to one customer (user)
@@ -121,12 +122,13 @@
 - Availability settings define when reservations can be made
 
 ### Row-Level Security (RLS) Policies
+
 - Users can only view and modify their own profile information
 - Customers can only view and modify their own reservations
 - Staff can view all reservations but only modify reservations they created
 - Admins have full access to all records
 - Availability settings can only be modified by admins
-</analysis>
+  </analysis>
 
 # Step 2: Implementation Brainstorming
 
@@ -136,11 +138,13 @@ For the 予約管理システム (Reservation Management System), I need to plan
 ### Logical Order Considerations:
 
 1. **Foundation First**: We need to establish the core infrastructure before building features:
+
    - Database schema and RLS policies must be implemented first as they're foundational
    - Authentication and middleware setup should come early as they protect routes
    - Reusable components should be built before the pages that use them
 
 2. **Authentication and Authorization Flow**:
+
    - The starter template has basic login/signup, but we need to extend it with:
      - Role-based access (admin, staff, customer)
      - Protected routes based on roles
@@ -148,6 +152,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
      - Middleware for route protection
 
 3. **Data Layer Before UI**:
+
    - API endpoints should be implemented before the UI components that consume them
    - Database triggers and functions for complex operations should be created early
    - Type definitions should be established before implementing components
@@ -160,22 +165,26 @@ For the 予約管理システム (Reservation Management System), I need to plan
 ### Middleware, Auth, and Edge Cases:
 
 1. **Authentication Middleware**:
+
    - Need middleware to check auth status on protected routes
    - Should redirect unauthenticated users to login
    - Must verify user roles for role-protected routes
 
 2. **Form Validation**:
+
    - Client-side validation for immediate feedback
    - Server-side validation for security
    - Consider using a form library like React Hook Form with Zod for validation
 
 3. **Error Handling**:
+
    - Global error boundary for unexpected errors
    - API error handling with proper status codes
    - User-friendly error messages
    - Logging for debugging
 
 4. **Edge Cases**:
+
    - Handling timezone differences for reservations
    - Concurrent reservation attempts for the same slot
    - Session expiration during form submission
@@ -183,6 +192,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
    - Database constraints for overlapping reservations
 
 5. **Authorization Concerns**:
+
    - RLS policies must be carefully designed to prevent data leakage
    - API endpoints need role checks before operations
    - UI should conditionally render based on permissions
@@ -193,6 +203,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
    - Implement caching where appropriate
 
 ### Implementation Strategy:
+
 - Start with database schema and RLS policies
 - Implement authentication flow with role management
 - Create core reusable components
@@ -201,13 +212,14 @@ For the 予約管理システム (Reservation Management System), I need to plan
 - Add admin functionality
 - Implement settings and user management
 - Add polish and optimizations
-</brainstorming>
+  </brainstorming>
 
 # Step 3: Detailed Implementation Plan
 
 # Implementation Plan
 
 ## Project Setup and Configuration
+
 - [x] Step 1: Project Structure and Type Definitions
   - **Task**: Set up the project structure and define TypeScript interfaces for the application
   - **Files**:
@@ -217,7 +229,9 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None (using existing starter template)
 
 ## Database Schema and Security Setup
+
 - [x] Step 2: Database Schema Implementation
+
   - **Task**: Create database tables, relationships, and initial seed data
   - **Files**:
     - supabase/migrations/001_initial_schema.sql: SQL for creating tables
@@ -233,7 +247,9 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: Execute SQL script in Supabase dashboard or via CLI
 
 ## Authentication and Authorization
+
 - [x] Step 4: Authentication Context and Hooks
+
   - **Task**: Create authentication context and custom hooks for auth state management
   - **Files**:
     - app/contexts/AuthContext.tsx: Auth context provider
@@ -251,7 +267,9 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Core UI Components
+
 - [x] Step 6: Layout Components
+
   - **Task**: Create reusable layout components
   - **Files**:
     - app/components/layouts/MainLayout.tsx: Main application layout
@@ -261,6 +279,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 - [x] Step 7: Basic UI Components
+
   - **Task**: Create reusable UI components
   - **Files**:
     - app/components/ui/Button.tsx: Button component with variants
@@ -284,7 +303,9 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## API Implementation
+
 - [x] Step 9: API Utilities and Error Handling
+
   - **Task**: Create API utilities and error handling functions
   - **Files**:
     - app/lib/api.ts: API utility functions
@@ -293,6 +314,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 - [x] Step 10: Reservation API Routes
+
   - **Task**: Implement reservation-related API endpoints
   - **Files**:
     - app/api/reservations/route.ts: GET and POST handlers
@@ -301,6 +323,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 - [x] Step 11: Availability API Routes
+
   - **Task**: Implement availability-related API endpoints
   - **Files**:
     - app/api/availability/route.ts: GET handler for available time slots
@@ -317,6 +340,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Calendar Components
+
 - [x] Step 13: Calendar Core Components
   - **Task**: Implement core calendar components
   - **Files**:
@@ -329,6 +353,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Reservation Components
+
 - [x] Step 14: Reservation Components
   - **Task**: Implement reservation-related components
   - **Files**:
@@ -340,7 +365,9 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 ## Page Implementation
+
 - [x] Step 15: Landing and Auth Pages
+
   - **Task**: Enhance landing page and auth pages
   - **Files**:
     - app/page.tsx: Landing page
@@ -350,6 +377,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 - [x] Step 16: Dashboard Home Page
+
   - **Task**: Implement dashboard home page
   - **Files**:
     - app/dashboard/page.tsx: Dashboard home page
@@ -357,6 +385,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 - [x] Step 17: Calendar View Page
+
   - **Task**: Implement calendar view page
   - **Files**:
     - app/dashboard/calendar/page.tsx: Calendar view page
@@ -364,6 +393,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 - [x] Step 18: Reservation List Pages
+
   - **Task**: Implement reservation list and detail pages
   - **Files**:
     - app/dashboard/reservations/page.tsx: Reservation list page
@@ -374,6 +404,7 @@ For the 予約管理システム (Reservation Management System), I need to plan
   - **User Instructions**: None
 
 - [x] Step 19: Settings Page
+
   - **Task**: Implement user settings page
   - **Files**:
     - app/dashboard/settings/page.tsx: User settings page

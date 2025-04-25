@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { cn } from "@/app/lib/utils";
-import React, { useState, useEffect } from "react";
-import CalendarMonth from "./CalendarMonth";
-import CalendarWeek from "./CalendarWeek";
-import CalendarDay from "./CalendarDay";
-import Button from "@/app/components/ui/Button";
+import { cn } from '@/app/lib/utils';
+import React, { useState, useEffect } from 'react';
+import CalendarMonth from './CalendarMonth';
+import CalendarWeek from './CalendarWeek';
+import CalendarDay from './CalendarDay';
+import Button from '@/app/components/ui/Button';
 
-type CalendarView = "day" | "week" | "month";
+type CalendarView = 'day' | 'week' | 'month';
 
 interface CalendarProps {
   initialDate?: Date;
@@ -31,7 +31,7 @@ interface CalendarProps {
 
 export default function Calendar({
   initialDate = new Date(),
-  view = "month",
+  view = 'month',
   timeSlots = [],
   onDateChange,
   onViewChange,
@@ -87,9 +87,9 @@ export default function Calendar({
   const goToPrevious = () => {
     const newDate = new Date(currentDate);
 
-    if (currentView === "day") {
+    if (currentView === 'day') {
       newDate.setDate(newDate.getDate() - 1);
-    } else if (currentView === "week") {
+    } else if (currentView === 'week') {
       newDate.setDate(newDate.getDate() - 7);
     } else {
       newDate.setMonth(newDate.getMonth() - 1);
@@ -105,9 +105,9 @@ export default function Calendar({
   const goToNext = () => {
     const newDate = new Date(currentDate);
 
-    if (currentView === "day") {
+    if (currentView === 'day') {
       newDate.setDate(newDate.getDate() + 1);
-    } else if (currentView === "week") {
+    } else if (currentView === 'week') {
       newDate.setDate(newDate.getDate() + 7);
     } else {
       newDate.setMonth(newDate.getMonth() + 1);
@@ -130,12 +130,12 @@ export default function Calendar({
   // Handle date selection in month view
   const handleDateSelect = (date: Date) => {
     setCurrentDate(date);
-    setCurrentView("day");
+    setCurrentView('day');
     if (onDateChange) {
       onDateChange(date);
     }
     if (onViewChange) {
-      onViewChange("day");
+      onViewChange('day');
     }
   };
 
@@ -159,38 +159,38 @@ export default function Calendar({
   const getTitle = () => {
     const options: Intl.DateTimeFormatOptions = {};
 
-    if (currentView === "day") {
-      options.weekday = "long";
-      options.year = "numeric";
-      options.month = "long";
-      options.day = "numeric";
-    } else if (currentView === "week") {
+    if (currentView === 'day') {
+      options.weekday = 'long';
+      options.year = 'numeric';
+      options.month = 'long';
+      options.day = 'numeric';
+    } else if (currentView === 'week') {
       const weekStart = getWeekStartDate();
       const weekEnd = new Date(weekStart);
       weekEnd.setDate(weekEnd.getDate() + 6);
 
       // Format: "February 2023" or "February - March 2023"
       if (weekStart.getMonth() === weekEnd.getMonth()) {
-        return `${weekStart.toLocaleDateString("en-US", {
-          month: "long",
+        return `${weekStart.toLocaleDateString('en-US', {
+          month: 'long',
         })} ${weekStart.getFullYear()}`;
       } else {
-        return `${weekStart.toLocaleDateString("en-US", {
-          month: "long",
-        })} - ${weekEnd.toLocaleDateString("en-US", {
-          month: "long",
+        return `${weekStart.toLocaleDateString('en-US', {
+          month: 'long',
+        })} - ${weekEnd.toLocaleDateString('en-US', {
+          month: 'long',
         })} ${weekStart.getFullYear()}`;
       }
     } else {
-      options.year = "numeric";
-      options.month = "long";
+      options.year = 'numeric';
+      options.month = 'long';
     }
 
-    return currentDate.toLocaleDateString("en-US", options);
+    return currentDate.toLocaleDateString('en-US', options);
   };
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <div className={cn('flex flex-col', className)}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <Button onClick={goToPrevious} variant="outline" size="sm">
@@ -228,22 +228,22 @@ export default function Calendar({
 
         <div className="flex items-center space-x-2">
           <Button
-            onClick={() => handleViewChange("day")}
-            variant={currentView === "day" ? "primary" : "outline"}
+            onClick={() => handleViewChange('day')}
+            variant={currentView === 'day' ? 'primary' : 'outline'}
             size="sm"
           >
             Day
           </Button>
           <Button
-            onClick={() => handleViewChange("week")}
-            variant={currentView === "week" ? "primary" : "outline"}
+            onClick={() => handleViewChange('week')}
+            variant={currentView === 'week' ? 'primary' : 'outline'}
             size="sm"
           >
             Week
           </Button>
           <Button
-            onClick={() => handleViewChange("month")}
-            variant={currentView === "month" ? "primary" : "outline"}
+            onClick={() => handleViewChange('month')}
+            variant={currentView === 'month' ? 'primary' : 'outline'}
             size="sm"
           >
             Month
@@ -252,7 +252,7 @@ export default function Calendar({
       </div>
 
       <div className="flex-grow">
-        {currentView === "day" && (
+        {currentView === 'day' && (
           <div className="border rounded-md shadow-sm h-96">
             <CalendarDay
               date={currentDate}
@@ -271,7 +271,7 @@ export default function Calendar({
           </div>
         )}
 
-        {currentView === "week" && (
+        {currentView === 'week' && (
           <CalendarWeek
             startDate={getWeekStartDate()}
             timeSlots={timeSlots}
@@ -281,7 +281,7 @@ export default function Calendar({
           />
         )}
 
-        {currentView === "month" && (
+        {currentView === 'month' && (
           <CalendarMonth
             month={currentDate.getMonth()}
             year={currentDate.getFullYear()}

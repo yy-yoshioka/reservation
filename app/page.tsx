@@ -17,14 +17,13 @@ export default function Home() {
                     Reservation Management System
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                    The easiest way to manage your reservations. Book, manage, and track your appointments with our simple and intuitive system.
+                    The easiest way to manage your reservations. Book, manage, and track your
+                    appointments with our simple and intuitive system.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Link href="/signup">
-                    <Button size="lg">
-                      Get Started
-                    </Button>
+                    <Button size="lg">Get Started</Button>
                   </Link>
                   <Link href="/login">
                     <Button variant="outline" size="lg">
@@ -53,7 +52,8 @@ export default function Home() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Features</h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our reservation system comes with everything you need to manage your bookings efficiently.
+                  Our reservation system comes with everything you need to manage your bookings
+                  efficiently.
                 </p>
               </div>
             </div>
@@ -77,7 +77,8 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold">Calendar View</h3>
                 <p className="text-sm text-gray-500">
-                  View your reservations in a convenient calendar interface with day, week, and month views.
+                  View your reservations in a convenient calendar interface with day, week, and
+                  month views.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
@@ -99,7 +100,8 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-bold">Booking Management</h3>
                 <p className="text-sm text-gray-500">
-                  Create, edit, and cancel reservations with ease. Track status and manage all your bookings in one place.
+                  Create, edit, and cancel reservations with ease. Track status and manage all your
+                  bookings in one place.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 rounded-lg border p-6 shadow-sm">
@@ -133,16 +135,16 @@ export default function Home() {
           <div className="container grid items-center gap-6 px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Ready to Get Started?</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  Ready to Get Started?
+                </h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Sign up now and start managing your reservations like a pro.
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Link href="/signup">
-                  <Button size="lg">
-                    Sign Up
-                  </Button>
+                  <Button size="lg">Sign Up</Button>
                 </Link>
               </div>
             </div>

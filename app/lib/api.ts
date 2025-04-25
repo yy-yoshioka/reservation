@@ -3,10 +3,7 @@ import { ApiResponse } from '@/app/types';
 /**
  * Base fetch wrapper with error handling for API calls
  */
-export async function fetchApi<T>(
-  url: string,
-  options?: RequestInit
-): Promise<ApiResponse<T>> {
+export async function fetchApi<T>(url: string, options?: RequestInit): Promise<ApiResponse<T>> {
   try {
     const response = await fetch(url, {
       ...options,
@@ -89,18 +86,18 @@ export function formatApiError(error: any): string {
   if (typeof error === 'string') {
     return error;
   }
-  
+
   if (error?.message) {
     return error.message;
   }
-  
+
   return 'An unknown error occurred';
 }
 
 /**
  * Validate response and handle common error cases
  */
-export function validateApiResponse<T>(response: ApiResponse<T>): { 
+export function validateApiResponse<T>(response: ApiResponse<T>): {
   valid: boolean;
   data?: T;
   errorMessage?: string;
@@ -111,14 +108,14 @@ export function validateApiResponse<T>(response: ApiResponse<T>): {
       errorMessage: formatApiError(response.error),
     };
   }
-  
+
   if (!response.data) {
     return {
       valid: false,
       errorMessage: 'No data received from the server',
     };
   }
-  
+
   return {
     valid: true,
     data: response.data,

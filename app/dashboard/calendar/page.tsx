@@ -26,18 +26,18 @@ export default function CalendarPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  
+
   // Fetch calendar data when the view or date changes
   useEffect(() => {
     const fetchCalendarData = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
         // Determine the date range to fetch based on the view
         let startDate = new Date(currentDate);
         let endDate = new Date(currentDate);
-        
+
         if (view === 'day') {
           // For day view, just use the current date
           startDate.setHours(0, 0, 0, 0);
@@ -47,7 +47,7 @@ export default function CalendarPage() {
           const day = currentDate.getDay(); // 0 for Sunday, 1 for Monday, etc.
           startDate.setDate(currentDate.getDate() - day);
           startDate.setHours(0, 0, 0, 0);
-          
+
           // End with Saturday of the current week
           endDate.setDate(startDate.getDate() + 6);
           endDate.setHours(23, 59, 59, 999);
@@ -55,36 +55,36 @@ export default function CalendarPage() {
           // For month view, start with the first day of the month
           startDate.setDate(1);
           startDate.setHours(0, 0, 0, 0);
-          
+
           // End with the last day of the month
           endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
           endDate.setHours(23, 59, 59, 999);
         }
-        
+
         // Fetch available time slots
         const availabilityResponse = await get<{ data: TimeSlot[] }>(
           `/api/availability?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
         );
-        
+
         // Fetch reservations for the same date range
         const reservationsResponse = await get<{ data: Reservation[] }>(
           `/api/reservations?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
         );
-        
+
         if (availabilityResponse.error) {
           setError(availabilityResponse.error);
           return;
         }
-        
+
         if (reservationsResponse.error) {
           setError(reservationsResponse.error);
           return;
         }
-        
+
         // Combine availability and reservations
         const availableSlots = availabilityResponse.data?.data || [];
         const reservations = reservationsResponse.data?.data || [];
-        
+
         // Map reservations to the time slots format
         const reservationSlots: TimeSlot[] = reservations.map((reservation) => ({
           start: reservation.start_time,
@@ -95,10 +95,10 @@ export default function CalendarPage() {
             status: reservation.status,
           },
         }));
-        
+
         // Merge available slots and reservation slots
         const mergedSlots = [...availableSlots, ...reservationSlots];
-        
+
         setTimeSlots(mergedSlots);
       } catch (err: any) {
         setError(err.message || 'Failed to fetch calendar data');
@@ -106,17 +106,15 @@ export default function CalendarPage() {
         setIsLoading(false);
       }
     };
-    
+
     fetchCalendarData();
   }, [view, currentDate]);
-  
+
   // Handle time slot selection
   const handleSlotSelect = (start: string, end: string) => {
     // Check if the slot has a reservation
-    const slot = timeSlots.find(
-      (slot) => slot.start === start && slot.end === end
-    );
-    
+    const slot = timeSlots.find((slot) => slot.start === start && slot.end === end);
+
     if (slot?.reservation) {
       // If it's a reservation, navigate to the reservation details page
       router.push(`/dashboard/reservations/${slot.reservation.id}`);
@@ -127,35 +125,29 @@ export default function CalendarPage() {
       );
     }
   };
-  
+
   return (
     <DashboardLayout>
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-2">Calendar</h1>
         <p className="text-gray-500">
-          View and manage your schedule. Click on an available time slot to create a new reservation.
+          View and manage your schedule. Click on an available time slot to create a new
+          reservation.
         </p>
       </div>
-      
+
       {error && (
-        <Alert
-          variant="error"
-          onClose={() => setError(null)}
-          className="mb-4"
-        >
+        <Alert variant="error" onClose={() => setError(null)} className="mb-4">
           {error}
         </Alert>
       )}
-      
+
       <div className="mb-4 flex justify-end">
-        <Button
-          variant="outline"
-          onClick={() => router.push('/dashboard/reservations/new')}
-        >
+        <Button variant="outline" onClick={() => router.push('/dashboard/reservations/new')}>
           New Reservation
         </Button>
       </div>
-      
+
       <div className="bg-white border rounded-lg shadow-sm p-4">
         <Calendar
           initialDate={currentDate}

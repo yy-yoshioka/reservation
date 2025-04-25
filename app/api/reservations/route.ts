@@ -1,8 +1,8 @@
-import { createClient } from "@/app/lib/supabase/server";
-import { withErrorHandling } from "@/app/lib/server-error";
-import { ValidationError } from "@/app/lib/errors/common";
-import { getUser } from "@/app/lib/auth";
-import { NextRequest, NextResponse } from "next/server";
+import { createClient } from '@/app/lib/supabase/server';
+import { withErrorHandling } from '@/app/lib/server-error';
+import { ValidationError } from '@/app/lib/errors/common';
+import { getUser } from '@/app/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/reservations - Get all reservations (with filtering options)
 export const GET = withErrorHandling(async (request: NextRequest) => {
@@ -19,28 +19,28 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
 
   // Parse query parameters
   const searchParams = request.nextUrl.searchParams;
-  const status = searchParams.get("status");
-  const startDate = searchParams.get("startDate");
-  const endDate = searchParams.get("endDate");
-  const page = parseInt(searchParams.get("page") || "1", 10);
-  const limit = parseInt(searchParams.get("limit") || "10", 10);
+  const status = searchParams.get('status');
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const limit = parseInt(searchParams.get('limit') || '10', 10);
   const offset = (page - 1) * limit;
 
   // Start building the query
-  let query = supabase.from("reservations").select("*", { count: "exact" });
+  let query = supabase.from('reservations').select('*', { count: 'exact' });
 
   // Check the user's role from metadata and apply filtering if user is logged in
   if (user) {
-    const userRole = user.user_metadata?.role || "customer";
+    const userRole = user.user_metadata?.role || 'customer';
 
     // Apply role-based filtering (RLS will handle this, but we're being explicit)
-    if (userRole === "customer") {
-      query = query.eq("customer_id", user.id);
-    } else if (userRole === "staff") {
+    if (userRole === 'customer') {
+      query = query.eq('customer_id', user.id);
+    } else if (userRole === 'staff') {
       // Staff can see all reservations or just the ones they created
-      const onlyMine = searchParams.get("onlyMine") === "true";
+      const onlyMine = searchParams.get('onlyMine') === 'true';
       if (onlyMine) {
-        query = query.eq("created_by", user.id);
+        query = query.eq('created_by', user.id);
       }
     }
     // Admins can see all reservations, so no additional filtering needed
@@ -48,21 +48,19 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
 
   // Apply filters
   if (status) {
-    query = query.eq("status", status);
+    query = query.eq('status', status);
   }
 
   if (startDate) {
-    query = query.gte("start_time", startDate);
+    query = query.gte('start_time', startDate);
   }
 
   if (endDate) {
-    query = query.lte("end_time", endDate);
+    query = query.lte('end_time', endDate);
   }
 
   // Apply pagination
-  query = query
-    .range(offset, offset + limit - 1)
-    .order("start_time", { ascending: true });
+  query = query.range(offset, offset + limit - 1).order('start_time', { ascending: true });
 
   // Execute the query
   const { data, error, count } = await query;
@@ -96,7 +94,7 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
     // In production, you would throw an AuthError here
     // throw new AuthError();
     return NextResponse.json(
-      { error: "Authentication required. For testing, please sign in first." },
+      { error: 'Authentication required. For testing, please sign in first.' },
       { status: 401 }
     );
   }
@@ -105,7 +103,7 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   const body = await request.json();
 
   // Validate required fields
-  const requiredFields = ["title", "start_time", "end_time", "status"];
+  const requiredFields = ['title', 'start_time', 'end_time', 'status'];
   const missingFields: Record<string, string> = {};
 
   for (const field of requiredFields) {
@@ -115,7 +113,7 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   }
 
   if (Object.keys(missingFields).length > 0) {
-    throw new ValidationError("Validation failed", missingFields);
+    throw new ValidationError('Validation failed', missingFields);
   }
 
   // Validate time interval
@@ -123,25 +121,23 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   const endTime = new Date(body.end_time);
 
   if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
-    throw new ValidationError("Invalid date format", {
-      time: "Start time and end time must be valid dates",
+    throw new ValidationError('Invalid date format', {
+      time: 'Start time and end time must be valid dates',
     });
   }
 
   if (startTime >= endTime) {
-    throw new ValidationError("Invalid time range", {
-      time: "End time must be after start time",
+    throw new ValidationError('Invalid time range', {
+      time: 'End time must be after start time',
     });
   }
 
   // Check for overlapping reservations (optional, as DB constraints handle this too)
   const { data: overlapping, error: overlapError } = await supabase
-    .from("reservations")
-    .select("id")
-    .or(
-      `start_time,lt.${endTime.toISOString()},end_time,gt.${startTime.toISOString()}`
-    )
-    .not("status", "eq", "cancelled")
+    .from('reservations')
+    .select('id')
+    .or(`start_time,lt.${endTime.toISOString()},end_time,gt.${startTime.toISOString()}`)
+    .not('status', 'eq', 'cancelled')
     .limit(1);
 
   if (overlapError) {
@@ -149,8 +145,8 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   }
 
   if (overlapping && overlapping.length > 0) {
-    throw new ValidationError("Overlapping reservation", {
-      time: "This time slot is already booked",
+    throw new ValidationError('Overlapping reservation', {
+      time: 'This time slot is already booked',
     });
   }
 
@@ -168,9 +164,9 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
 
   // Insert the reservation
   const { data, error } = await supabase
-    .from("reservations")
+    .from('reservations')
     .insert(reservation)
-    .select("*")
+    .select('*')
     .single();
 
   if (error) {
@@ -186,13 +182,11 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       additional_notes: body.additional_notes || null,
     };
 
-    const { error: detailsError } = await supabase
-      .from("reservation_details")
-      .insert(details);
+    const { error: detailsError } = await supabase.from('reservation_details').insert(details);
 
     if (detailsError) {
       // If details insertion fails, we should still return the reservation
-      console.error("Failed to insert reservation details:", detailsError);
+      console.error('Failed to insert reservation details:', detailsError);
     }
   }
 

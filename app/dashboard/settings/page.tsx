@@ -1,33 +1,29 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import DashboardLayout from "@/app/components/layouts/DashboardLayout";
-import Button from "@/app/components/ui/Button";
-import Input from "@/app/components/ui/Input";
-import Card from "@/app/components/ui/Card";
-import Alert from "@/app/components/ui/Alert";
-import { useAuth } from "@/app/hooks/useAuth";
-import { useUser } from "@/app/hooks/useUser";
+import { useEffect, useState } from 'react';
+import DashboardLayout from '@/app/components/layouts/DashboardLayout';
+import Button from '@/app/components/ui/Button';
+import Input from '@/app/components/ui/Input';
+import Card from '@/app/components/ui/Card';
+import Alert from '@/app/components/ui/Alert';
+import { useAuth } from '@/app/hooks/useAuth';
+import { useUser } from '@/app/hooks/useUser';
 
 export default function SettingsPage() {
   const { user } = useAuth();
-  const {
-    getUserProfile,
-    updateUserProfile,
-    isLoading: userLoading,
-  } = useUser();
+  const { getUserProfile, updateUserProfile, isLoading: userLoading } = useUser();
 
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone: "",
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
   });
 
   const [passwordForm, setPasswordForm] = useState({
-    current_password: "",
-    new_password: "",
-    confirm_password: "",
+    current_password: '',
+    new_password: '',
+    confirm_password: '',
   });
 
   const [formLoading, setFormLoading] = useState(false);
@@ -45,10 +41,10 @@ export default function SettingsPage() {
 
         if (userProfile) {
           setFormData({
-            first_name: userProfile.first_name || "",
-            last_name: userProfile.last_name || "",
-            email: user.email || "",
-            phone: userProfile.phone || "",
+            first_name: userProfile.first_name || '',
+            last_name: userProfile.last_name || '',
+            email: user.email || '',
+            phone: userProfile.phone || '',
           });
         }
       }
@@ -90,13 +86,12 @@ export default function SettingsPage() {
       });
 
       if (result.success) {
-        setSuccess("Profile updated successfully");
+        setSuccess('Profile updated successfully');
       } else {
-        setError(result.error || "Failed to update profile");
+        setError(result.error || 'Failed to update profile');
       }
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unexpected error occurred";
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
       setError(errorMessage);
     } finally {
       setFormLoading(false);
@@ -112,22 +107,22 @@ export default function SettingsPage() {
 
     // Validate passwords
     if (passwordForm.new_password !== passwordForm.confirm_password) {
-      setPasswordError("Passwords do not match");
+      setPasswordError('Passwords do not match');
       setPasswordLoading(false);
       return;
     }
 
     if (passwordForm.new_password.length < 8) {
-      setPasswordError("Password must be at least 8 characters long");
+      setPasswordError('Password must be at least 8 characters long');
       setPasswordLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("/api/me/password", {
-        method: "PUT",
+      const response = await fetch('/api/me/password', {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           current_password: passwordForm.current_password,
@@ -138,18 +133,17 @@ export default function SettingsPage() {
       const data = await response.json();
 
       if (response.ok) {
-        setPasswordSuccess("Password updated successfully");
+        setPasswordSuccess('Password updated successfully');
         setPasswordForm({
-          current_password: "",
-          new_password: "",
-          confirm_password: "",
+          current_password: '',
+          new_password: '',
+          confirm_password: '',
         });
       } else {
-        setPasswordError(data.error || "Failed to update password");
+        setPasswordError(data.error || 'Failed to update password');
       }
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unexpected error occurred";
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
       setPasswordError(errorMessage);
     } finally {
       setPasswordLoading(false);
@@ -160,9 +154,7 @@ export default function SettingsPage() {
     <DashboardLayout>
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-2">Account Settings</h1>
-        <p className="text-gray-500">
-          Manage your account settings and change your password.
-        </p>
+        <p className="text-gray-500">Manage your account settings and change your password.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -174,21 +166,13 @@ export default function SettingsPage() {
 
           <Card.Content>
             {success && (
-              <Alert
-                variant="success"
-                onClose={() => setSuccess(null)}
-                className="mb-4"
-              >
+              <Alert variant="success" onClose={() => setSuccess(null)} className="mb-4">
                 {success}
               </Alert>
             )}
 
             {error && (
-              <Alert
-                variant="error"
-                onClose={() => setError(null)}
-                className="mb-4"
-              >
+              <Alert variant="error" onClose={() => setError(null)} className="mb-4">
                 {error}
               </Alert>
             )}
@@ -245,21 +229,13 @@ export default function SettingsPage() {
 
           <Card.Content>
             {passwordSuccess && (
-              <Alert
-                variant="success"
-                onClose={() => setPasswordSuccess(null)}
-                className="mb-4"
-              >
+              <Alert variant="success" onClose={() => setPasswordSuccess(null)} className="mb-4">
                 {passwordSuccess}
               </Alert>
             )}
 
             {passwordError && (
-              <Alert
-                variant="error"
-                onClose={() => setPasswordError(null)}
-                className="mb-4"
-              >
+              <Alert variant="error" onClose={() => setPasswordError(null)} className="mb-4">
                 {passwordError}
               </Alert>
             )}
@@ -310,12 +286,9 @@ export default function SettingsPage() {
 
           <Card.Content>
             <div className="border border-red-200 rounded-md p-4">
-              <h3 className="text-lg font-medium text-red-600 mb-2">
-                Delete Account
-              </h3>
+              <h3 className="text-lg font-medium text-red-600 mb-2">Delete Account</h3>
               <p className="text-gray-700 mb-4">
-                Once you delete your account, there is no going back. Please be
-                certain.
+                Once you delete your account, there is no going back. Please be certain.
               </p>
               <Button variant="danger">Delete Account</Button>
             </div>

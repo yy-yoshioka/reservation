@@ -10,18 +10,13 @@ interface CardProps {
   hoverable?: boolean;
 }
 
-export function Card({ 
-  children, 
-  className,
-  onClick,
-  hoverable = false,
-}: CardProps) {
+export function Card({ children, className, onClick, hoverable = false }: CardProps) {
   return (
-    <div 
+    <div
       className={cn(
-        "bg-white border rounded-lg shadow-sm overflow-hidden",
-        hoverable && "transition-shadow hover:shadow-md",
-        onClick && "cursor-pointer",
+        'bg-white border rounded-lg shadow-sm overflow-hidden',
+        hoverable && 'transition-shadow hover:shadow-md',
+        onClick && 'cursor-pointer',
         className
       )}
       onClick={onClick}
@@ -37,11 +32,7 @@ interface CardHeaderProps {
 }
 
 export function CardHeader({ children, className }: CardHeaderProps) {
-  return (
-    <div className={cn("px-6 py-4 border-b", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('px-6 py-4 border-b', className)}>{children}</div>;
 }
 
 interface CardTitleProps {
@@ -50,11 +41,7 @@ interface CardTitleProps {
 }
 
 export function CardTitle({ children, className }: CardTitleProps) {
-  return (
-    <h3 className={cn("text-lg font-medium text-gray-900", className)}>
-      {children}
-    </h3>
-  );
+  return <h3 className={cn('text-lg font-medium text-gray-900', className)}>{children}</h3>;
 }
 
 interface CardContentProps {
@@ -63,11 +50,7 @@ interface CardContentProps {
 }
 
 export function CardContent({ children, className }: CardContentProps) {
-  return (
-    <div className={cn("px-6 py-4", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('px-6 py-4', className)}>{children}</div>;
 }
 
 interface CardFooterProps {
@@ -76,11 +59,7 @@ interface CardFooterProps {
 }
 
 export function CardFooter({ children, className }: CardFooterProps) {
-  return (
-    <div className={cn("px-6 py-4 bg-gray-50 border-t", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('px-6 py-4 bg-gray-50 border-t', className)}>{children}</div>;
 }
 
 export default Object.assign(Card, {

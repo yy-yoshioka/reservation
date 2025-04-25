@@ -18,20 +18,20 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       setError('Please enter both email and password');
       return;
     }
-    
+
     try {
       const result = await signIn(email, password);
-      
+
       if (!result.success) {
         setError(result.error || 'Failed to sign in');
         return;
       }
-      
+
       // Sign-in successful, redirect to dashboard
       router.push('/dashboard');
     } catch (err: any) {
@@ -45,17 +45,13 @@ export default function LoginPage() {
         <div className="flex justify-center mb-8">
           <h1 className="text-2xl font-bold">Sign In</h1>
         </div>
-        
+
         {error && (
-          <Alert
-            variant="error"
-            onClose={() => setError(null)}
-            className="mb-4"
-          >
+          <Alert variant="error" onClose={() => setError(null)} className="mb-4">
             {error}
           </Alert>
         )}
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Email"
@@ -64,7 +60,7 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          
+
           <Input
             label="Password"
             type="password"
@@ -72,7 +68,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          
+
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -85,7 +81,7 @@ export default function LoginPage() {
                 Remember me
               </label>
             </div>
-            
+
             <div className="text-sm">
               <Link
                 href="/forgot-password"
@@ -95,22 +91,15 @@ export default function LoginPage() {
               </Link>
             </div>
           </div>
-          
-          <Button
-            type="submit"
-            fullWidth
-            isLoading={isLoading}
-          >
+
+          <Button type="submit" fullWidth isLoading={isLoading}>
             Sign In
           </Button>
-          
+
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
               Don&apos;t have an account?{' '}
-              <Link
-                href="/signup"
-                className="font-medium text-blue-600 hover:text-blue-500"
-              >
+              <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
                 Sign up
               </Link>
             </p>

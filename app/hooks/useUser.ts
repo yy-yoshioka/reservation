@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useCallback } from "react";
-import { useAuth } from "@/app/hooks/useAuth";
-import { User } from "@/app/types";
-import { get, post } from "@/app/lib/api";
+import { useState, useCallback } from 'react';
+import { useAuth } from '@/app/hooks/useAuth';
+import { User } from '@/app/types';
+import { get, post } from '@/app/lib/api';
 
 export const useUser = () => {
   const { user } = useAuth();
@@ -18,9 +18,7 @@ export const useUser = () => {
 
     try {
       // クライアントサイドからの直接アクセスの代わりに、サーバーAPIを使用
-      const response = await get<{ data: User | null; error?: string }>(
-        `/api/me`
-      );
+      const response = await get<{ data: User | null; error?: string }>(`/api/me`);
 
       if (response.error) {
         setError(response.error);
@@ -32,11 +30,11 @@ export const useUser = () => {
         const createResponse = await post<{
           data: User | null;
           error?: string;
-        }>("/api/me", {
+        }>('/api/me', {
           email: user.email,
-          first_name: user.user_metadata?.first_name || "",
-          last_name: user.user_metadata?.last_name || "",
-          role: user.user_metadata?.role || "customer",
+          first_name: user.user_metadata?.first_name || '',
+          last_name: user.user_metadata?.last_name || '',
+          role: user.user_metadata?.role || 'customer',
         });
 
         if (createResponse.error) {
@@ -49,8 +47,7 @@ export const useUser = () => {
 
       return response.data.data;
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Unknown error occurred";
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       setError(errorMessage);
       return null;
     } finally {
@@ -59,11 +56,9 @@ export const useUser = () => {
   }, [user]);
 
   const updateUserProfile = useCallback(
-    async (
-      userData: Partial<User>
-    ): Promise<{ success: boolean; error?: string }> => {
+    async (userData: Partial<User>): Promise<{ success: boolean; error?: string }> => {
       if (!user) {
-        return { success: false, error: "Not authenticated" };
+        return { success: false, error: 'Not authenticated' };
       }
 
       setIsLoading(true);
@@ -71,10 +66,7 @@ export const useUser = () => {
 
       try {
         // クライアントからの直接更新の代わりに、サーバーAPIを使用
-        const response = await post<{ success: boolean; error?: string }>(
-          "/api/me",
-          userData
-        );
+        const response = await post<{ success: boolean; error?: string }>('/api/me', userData);
 
         if (response.error) {
           setError(response.error);
@@ -83,8 +75,7 @@ export const useUser = () => {
 
         return { success: true };
       } catch (err: unknown) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Unknown error occurred";
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
         setError(errorMessage);
         return { success: false, error: errorMessage };
       } finally {

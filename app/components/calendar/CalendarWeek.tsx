@@ -30,36 +30,36 @@ export default function CalendarWeek({
   className,
 }: CalendarWeekProps) {
   const [weekDays, setWeekDays] = useState<Date[]>([]);
-  
+
   // Generate the days of the week based on the start date
   useEffect(() => {
     const days = [];
     const currentDate = new Date(startDate);
-    
+
     for (let i = 0; i < 7; i++) {
       days.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
     }
-    
+
     setWeekDays(days);
   }, [startDate]);
-  
+
   // Group time slots by day
   const getTimeSlotsForDay = (day: Date) => {
     const dayStart = new Date(day);
     dayStart.setHours(0, 0, 0, 0);
-    
+
     const dayEnd = new Date(day);
     dayEnd.setHours(23, 59, 59, 999);
-    
-    return timeSlots.filter(slot => {
+
+    return timeSlots.filter((slot) => {
       const slotStart = new Date(slot.start);
       return slotStart >= dayStart && slotStart <= dayEnd;
     });
   };
-  
+
   return (
-    <div className={cn("grid grid-cols-1 md:grid-cols-7 gap-4", className)}>
+    <div className={cn('grid grid-cols-1 md:grid-cols-7 gap-4', className)}>
       {weekDays.map((day, index) => (
         <div key={index} className="border rounded-md shadow-sm h-96">
           <CalendarDay

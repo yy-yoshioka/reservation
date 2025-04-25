@@ -29,43 +29,45 @@ export default function CalendarDay({
   isLoading = false,
   className,
 }: CalendarDayProps) {
-  const [availableSlots, setAvailableSlots] = useState<Array<{
-    start: string;
-    end: string;
-    reservation?: {
-      id: string;
-      title: string;
-      status: string;
-    };
-  }>>([]);
-  
+  const [availableSlots, setAvailableSlots] = useState<
+    Array<{
+      start: string;
+      end: string;
+      reservation?: {
+        id: string;
+        title: string;
+        status: string;
+      };
+    }>
+  >([]);
+
   // Format the date for display
   const formattedDate = formatDate(date);
-  
+
   // Update available slots when the timeSlots prop changes
   useEffect(() => {
     setAvailableSlots(timeSlots);
   }, [timeSlots]);
-  
+
   // Check if a slot is selected
   const isSlotSelected = (start: string, end: string) => {
     if (!selectedSlot) return false;
     return selectedSlot.start === start && selectedSlot.end === end;
   };
-  
+
   // Handle slot click
   const handleSlotClick = (start: string, end: string) => {
     if (onSlotSelect) {
       onSlotSelect(start, end);
     }
   };
-  
+
   return (
-    <div className={cn("flex flex-col h-full", className)}>
+    <div className={cn('flex flex-col h-full', className)}>
       <div className="flex items-center justify-between p-2 border-b">
         <h3 className="text-lg font-medium">{formattedDate}</h3>
       </div>
-      
+
       <div className="flex-grow p-2 overflow-y-auto">
         {isLoading ? (
           <div className="flex justify-center items-center h-full">

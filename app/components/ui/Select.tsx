@@ -19,35 +19,40 @@ export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectE
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, options, label, helperText, error, fullWidth = true, size = 'md', id, ...props }, ref) => {
+  (
+    { className, options, label, helperText, error, fullWidth = true, size = 'md', id, ...props },
+    ref
+  ) => {
     const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const sizeStyles = {
-      sm: "py-1 text-xs",
-      md: "py-2 text-sm",
-      lg: "py-3 text-base",
+      sm: 'py-1 text-xs',
+      md: 'py-2 text-sm',
+      lg: 'py-3 text-base',
     };
-    
+
     return (
-      <div className={cn("mb-4", fullWidth ? "w-full" : "")}>
+      <div className={cn('mb-4', fullWidth ? 'w-full' : '')}>
         {label && (
           <label htmlFor={selectId} className="block text-sm font-medium text-gray-700 mb-1">
             {label}
           </label>
         )}
-        
+
         <select
           ref={ref}
           id={selectId}
           className={cn(
-            "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500",
+            'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500',
             sizeStyles[size],
-            error && "border-red-300 text-red-900 focus:border-red-500 focus:ring-red-500",
-            fullWidth && "w-full",
+            error && 'border-red-300 text-red-900 focus:border-red-500 focus:ring-red-500',
+            fullWidth && 'w-full',
             className
           )}
-          aria-invalid={error ? "true" : "false"}
-          aria-describedby={error ? `${selectId}-error` : helperText ? `${selectId}-helper` : undefined}
+          aria-invalid={error ? 'true' : 'false'}
+          aria-describedby={
+            error ? `${selectId}-error` : helperText ? `${selectId}-helper` : undefined
+          }
           {...props}
         >
           {options.map((option) => (
@@ -56,13 +61,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        
+
         {helperText && !error && (
           <p className="mt-1 text-sm text-gray-500" id={`${selectId}-helper`}>
             {helperText}
           </p>
         )}
-        
+
         {error && (
           <p className="mt-1 text-sm text-red-600" id={`${selectId}-error`}>
             {error}

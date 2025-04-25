@@ -11,7 +11,12 @@ type AuthContextType = {
   role: string | null;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  signUp: (email: string, password: string, firstName: string, lastName: string) => Promise<{ success: boolean; error?: string }>;
+  signUp: (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+  ) => Promise<{ success: boolean; error?: string }>;
   signOut: () => Promise<void>;
   updateProfile: (data: {
     first_name?: string;
@@ -47,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(newSession?.user ?? null);
       setRole(newSession?.user?.user_metadata?.role ?? 'customer');
       setIsLoading(false);
-      
+
       if (event === 'SIGNED_IN') {
         router.refresh();
       } else if (event === 'SIGNED_OUT') {
@@ -67,11 +72,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
       });
-      
+
       if (error) {
         return { success: false, error: error.message };
       }
-      
+
       return { success: true };
     } catch (error: any) {
       return { success: false, error: error.message };
@@ -94,28 +99,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           },
         },
       });
-      
+
       if (error) {
         return { success: false, error: error.message };
       }
-      
+
       // Create user record in users table
       if (data.user) {
-        const { error: profileError } = await supabase
-          .from('users')
-          .insert({
-            id: data.user.id,
-            email: data.user.email,
-            first_name: firstName,
-            last_name: lastName,
-            role: 'customer',
-          });
-          
+        const { error: profileError } = await supabase.from('users').insert({
+          id: data.user.id,
+          email: data.user.email,
+          first_name: firstName,
+          last_name: lastName,
+          role: 'customer',
+        });
+
         if (profileError) {
           return { success: false, error: profileError.message };
         }
       }
-      
+
       return { success: true };
     } catch (error: any) {
       return { success: false, error: error.message };
@@ -183,11 +186,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     updateProfile,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = (): AuthContextType => {

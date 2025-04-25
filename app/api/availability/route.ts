@@ -1,7 +1,7 @@
-import { createClient } from "@/app/lib/supabase/server";
-import { withErrorHandling } from "@/app/lib/server-error";
-import { ValidationError } from "@/app/lib/errors/common";
-import { NextRequest, NextResponse } from "next/server";
+import { createClient } from '@/app/lib/supabase/server';
+import { withErrorHandling } from '@/app/lib/server-error';
+import { ValidationError } from '@/app/lib/errors/common';
+import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/availability - Get available time slots
 export const GET = withErrorHandling(async (request: NextRequest) => {
@@ -10,14 +10,14 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
   try {
     // Parse query parameters
     const searchParams = request.nextUrl.searchParams;
-    const date = searchParams.get("date");
-    const startDate = searchParams.get("startDate");
-    const endDate = searchParams.get("endDate");
+    const date = searchParams.get('date');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
 
     // Validate date parameters
     if (!date && (!startDate || !endDate)) {
-      throw new ValidationError("Date parameters required", {
-        date: "Either date or startDate and endDate must be provided",
+      throw new ValidationError('Date parameters required', {
+        date: 'Either date or startDate and endDate must be provided',
       });
     }
 
@@ -38,31 +38,28 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
 
     // Validate date objects
     if (isNaN(startDateObj.getTime()) || isNaN(endDateObj.getTime())) {
-      throw new ValidationError("Invalid date format", {
-        date: "Dates must be in a valid format (YYYY-MM-DD)",
+      throw new ValidationError('Invalid date format', {
+        date: 'Dates must be in a valid format (YYYY-MM-DD)',
       });
     }
 
     if (startDateObj > endDateObj) {
-      throw new ValidationError("Invalid date range", {
-        date: "Start date must be before or equal to end date",
+      throw new ValidationError('Invalid date range', {
+        date: 'Start date must be before or equal to end date',
       });
     }
 
     // Check if the availability_settings table exists
     const { error: tableCheckError } = await supabase
-      .from("availability_settings")
-      .select("count(*)", { count: "exact", head: true });
+      .from('availability_settings')
+      .select('count(*)', { count: 'exact', head: true });
 
     // If the table doesn't exist or any other error happens, return default availability
     if (tableCheckError) {
-      console.error("Error checking availability table:", tableCheckError);
+      console.error('Error checking availability table:', tableCheckError);
 
       // Return default time slots (9 AM to 5 PM for each day in the range)
-      const defaultTimeSlots = generateDefaultTimeSlots(
-        startDateObj,
-        endDateObj
-      );
+      const defaultTimeSlots = generateDefaultTimeSlots(startDateObj, endDateObj);
 
       return NextResponse.json({
         data: defaultTimeSlots,
@@ -70,24 +67,21 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
           total: defaultTimeSlots.length,
           startDate: startDateObj.toISOString(),
           endDate: endDateObj.toISOString(),
-          note: "Using default availability due to database setup issues",
+          note: 'Using default availability due to database setup issues',
         },
       });
     }
 
     // Fetch existing reservations for the date range
     const { data: reservations, error: reservationsError } = await supabase
-      .from("reservations")
-      .select("start_time, end_time")
-      .gte("start_time", startDateObj.toISOString())
-      .lte("end_time", endDateObj.toISOString())
-      .not("status", "eq", "cancelled");
+      .from('reservations')
+      .select('start_time, end_time')
+      .gte('start_time', startDateObj.toISOString())
+      .lte('end_time', endDateObj.toISOString())
+      .not('status', 'eq', 'cancelled');
 
     if (reservationsError) {
-      return NextResponse.json(
-        { error: reservationsError.message },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: reservationsError.message }, { status: 500 });
     }
 
     // Fetch availability settings based on requested date(s)
@@ -101,18 +95,14 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
     }
 
     // Fetch availability settings for the days we need
-    const { data: availabilitySettings, error: availabilityError } =
-      await supabase
-        .from("availability_settings")
-        .select("*")
-        .in("day_of_week", Array.from(daysOfWeek))
-        .eq("is_available", true);
+    const { data: availabilitySettings, error: availabilityError } = await supabase
+      .from('availability_settings')
+      .select('*')
+      .in('day_of_week', Array.from(daysOfWeek))
+      .eq('is_available', true);
 
     if (availabilityError) {
-      return NextResponse.json(
-        { error: availabilityError.message },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: availabilityError.message }, { status: 500 });
     }
 
     // Generate time slots based on availability settings
@@ -124,20 +114,16 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
       const dayOfWeek = currentDate.getDay();
 
       // Find settings for this day of week
-      const settings = availabilitySettings?.find(
-        (setting) => setting.day_of_week === dayOfWeek
-      );
+      const settings = availabilitySettings?.find((setting) => setting.day_of_week === dayOfWeek);
 
       // If we have settings for this day and it's available
       if (settings && settings.is_available) {
         const dayStart = new Date(currentDate);
-        const [startHours, startMinutes] = settings.start_time
-          .split(":")
-          .map(Number);
+        const [startHours, startMinutes] = settings.start_time.split(':').map(Number);
         dayStart.setHours(startHours, startMinutes, 0, 0);
 
         const dayEnd = new Date(currentDate);
-        const [endHours, endMinutes] = settings.end_time.split(":").map(Number);
+        const [endHours, endMinutes] = settings.end_time.split(':').map(Number);
         dayEnd.setHours(endHours, endMinutes, 0, 0);
 
         // Default time slot duration (30 minutes)
@@ -186,15 +172,11 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
       },
     });
   } catch (error) {
-    console.error("Error in availability endpoint:", error);
+    console.error('Error in availability endpoint:', error);
 
     // Generate default time slots for fallback
-    const startDateObj = new Date(
-      request.nextUrl.searchParams.get("startDate") || new Date()
-    );
-    const endDateObj = new Date(
-      request.nextUrl.searchParams.get("endDate") || new Date()
-    );
+    const startDateObj = new Date(request.nextUrl.searchParams.get('startDate') || new Date());
+    const endDateObj = new Date(request.nextUrl.searchParams.get('endDate') || new Date());
     endDateObj.setDate(startDateObj.getDate() + 7); // Default to a week if dates are invalid
 
     const defaultTimeSlots = generateDefaultTimeSlots(startDateObj, endDateObj);
@@ -205,7 +187,7 @@ export const GET = withErrorHandling(async (request: NextRequest) => {
         total: defaultTimeSlots.length,
         startDate: startDateObj.toISOString(),
         endDate: endDateObj.toISOString(),
-        note: "Using default availability due to an error",
+        note: 'Using default availability due to an error',
       },
     });
   }

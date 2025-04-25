@@ -24,12 +24,12 @@ export default function Pagination({
     if (page < 1 || page > totalPages) return;
     onPageChange(page);
   };
-  
+
   // Generate page numbers to display (show current page and 1 on each side)
   const getPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 5;
-    
+
     if (totalPages <= maxPagesToShow) {
       // If there are few pages, show all of them
       for (let i = 1; i <= totalPages; i++) {
@@ -38,44 +38,44 @@ export default function Pagination({
     } else {
       // Always show first and last page
       pages.push(1);
-      
+
       // Calculate start and end of page range
       let startPage = Math.max(2, currentPage - 1);
       let endPage = Math.min(totalPages - 1, currentPage + 1);
-      
+
       // Adjust if at the beginning or end
       if (currentPage <= 2) {
         endPage = 3;
       } else if (currentPage >= totalPages - 1) {
         startPage = totalPages - 2;
       }
-      
+
       // Add ellipsis if needed
       if (startPage > 2) {
         pages.push(null); // null represents ellipsis
       }
-      
+
       // Add the pages in range
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
-      
+
       // Add ellipsis if needed
       if (endPage < totalPages - 1) {
         pages.push(null); // null represents ellipsis
       }
-      
+
       // Add last page if not already included
       if (endPage < totalPages) {
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   };
-  
+
   if (totalPages <= 1) return null;
-  
+
   return (
     <nav
       className={cn('flex items-center justify-center space-x-1', className)}
@@ -114,9 +114,7 @@ export default function Pagination({
         disabled={currentPage === 1}
         className={cn(
           'relative inline-flex items-center px-2 py-2 rounded-md text-sm font-medium',
-          currentPage === 1
-            ? 'text-gray-300 cursor-not-allowed'
-            : 'text-gray-700 hover:bg-gray-50'
+          currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-700 hover:bg-gray-50'
         )}
       >
         <span className="sr-only">Previous</span>
@@ -189,7 +187,7 @@ export default function Pagination({
           />
         </svg>
       </button>
-      
+
       {showFirstLastButtons && (
         <button
           onClick={() => handlePageChange(totalPages)}

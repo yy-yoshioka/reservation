@@ -23,34 +23,34 @@ export default function Modal({
   size = 'md',
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
-  
+
   const sizeStyles = {
-    sm: "max-w-sm",
-    md: "max-w-md",
-    lg: "max-w-lg",
-    xl: "max-w-xl",
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-lg',
+    xl: 'max-w-xl',
   };
-  
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
       }
     };
-    
+
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
-    
+
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
       document.addEventListener('mousedown', handleClickOutside);
       // Disable body scroll
       document.body.style.overflow = 'hidden';
     }
-    
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
@@ -58,17 +58,17 @@ export default function Modal({
       document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
-  
+
   if (!isOpen) {
     return null;
   }
-  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div 
+      <div
         ref={modalRef}
         className={cn(
-          "bg-white rounded-lg shadow-xl w-full mx-auto overflow-hidden",
+          'bg-white rounded-lg shadow-xl w-full mx-auto overflow-hidden',
           sizeStyles[size],
           className
         )}
@@ -83,14 +83,25 @@ export default function Modal({
                 onClick={onClose}
                 aria-label="Close"
               >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             )}
           </div>
         )}
-        
+
         <div className="px-6 py-4">{children}</div>
       </div>
     </div>

@@ -1,11 +1,6 @@
-"use client";
+'use client';
 
-import {
-  ApiError,
-  ValidationError,
-  AuthError,
-  NotFoundError,
-} from "@/app/lib/errors/common";
+import { ApiError, ValidationError, AuthError, NotFoundError } from '@/app/lib/errors/common';
 
 /**
  * Error handling utilities for client components
@@ -52,7 +47,7 @@ export function formatErrorResponse(error: unknown) {
   }
 
   return {
-    error: "An unknown error occurred",
+    error: 'An unknown error occurred',
     statusCode: 500,
   };
 }
@@ -60,9 +55,9 @@ export function formatErrorResponse(error: unknown) {
 /**
  * Create a safe wrapper for API handlers to catch and format errors
  */
-export function withErrorHandling<
-  T extends (...args: unknown[]) => Promise<Response>
->(handler: T): T {
+export function withErrorHandling<T extends (...args: unknown[]) => Promise<Response>>(
+  handler: T
+): T {
   return (async (...args: Parameters<T>) => {
     try {
       return await handler(...args);
@@ -71,7 +66,7 @@ export function withErrorHandling<
 
       return new Response(JSON.stringify({ error: errorMessage }), {
         status: statusCode,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       });
     }
   }) as T;
@@ -80,24 +75,17 @@ export function withErrorHandling<
 /**
  * Validate required fields in an object
  */
-export function validateRequired(
-  data: Record<string, unknown>,
-  requiredFields: string[]
-): void {
+export function validateRequired(data: Record<string, unknown>, requiredFields: string[]): void {
   const missingFields: Record<string, string> = {};
 
   for (const field of requiredFields) {
-    if (
-      data[field] === undefined ||
-      data[field] === null ||
-      data[field] === ""
-    ) {
+    if (data[field] === undefined || data[field] === null || data[field] === '') {
       missingFields[field] = `${field} is required`;
     }
   }
 
   if (Object.keys(missingFields).length > 0) {
-    throw new ValidationError("Validation failed", missingFields);
+    throw new ValidationError('Validation failed', missingFields);
   }
 }
 

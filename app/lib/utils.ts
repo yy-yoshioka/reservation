@@ -1,4 +1,4 @@
-import { type ClassValue, clsx } from "clsx";
+import { type ClassValue, clsx } from 'clsx';
 
 /**
  * Combines multiple class names using clsx
@@ -12,7 +12,7 @@ export function cn(...inputs: ClassValue[]) {
  */
 export function formatDate(date: Date | string): string {
   if (!date) return '';
-  
+
   const d = typeof date === 'string' ? new Date(date) : date;
   return d.toLocaleDateString('en-US', {
     weekday: 'short',
@@ -27,7 +27,7 @@ export function formatDate(date: Date | string): string {
  */
 export function formatTime(date: Date | string): string {
   if (!date) return '';
-  
+
   const d = typeof date === 'string' ? new Date(date) : date;
   return d.toLocaleTimeString('en-US', {
     hour: '2-digit',
@@ -40,7 +40,7 @@ export function formatTime(date: Date | string): string {
  */
 export function formatDateTime(date: Date | string): string {
   if (!date) return '';
-  
+
   const d = typeof date === 'string' ? new Date(date) : date;
   return `${formatDate(d)} at ${formatTime(d)}`;
 }
@@ -51,7 +51,7 @@ export function formatDateTime(date: Date | string): string {
 export function truncateString(str: string, maxLength: number = 50): string {
   if (!str) return '';
   if (str.length <= maxLength) return str;
-  
+
   return `${str.substring(0, maxLength)}...`;
 }
 

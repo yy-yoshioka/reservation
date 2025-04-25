@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import DashboardLayout from "@/app/components/layouts/DashboardLayout";
-import ReservationForm from "@/app/components/reservations/ReservationForm";
-import Alert from "@/app/components/ui/Alert";
-import { ReservationFormData, User } from "@/app/types";
-import { get } from "@/app/lib/api";
-import { useAuth } from "@/app/hooks/useAuth";
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import DashboardLayout from '@/app/components/layouts/DashboardLayout';
+import ReservationForm from '@/app/components/reservations/ReservationForm';
+import Alert from '@/app/components/ui/Alert';
+import { ReservationFormData, User } from '@/app/types';
+import { get } from '@/app/lib/api';
+import { useAuth } from '@/app/hooks/useAuth';
 
 export default function NewReservationPage() {
   const { role } = useAuth();
@@ -22,16 +22,14 @@ export default function NewReservationPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Get initial date from URL parameters or use current date
-  const initialDateParam = searchParams.get("date");
-  const initialDate = initialDateParam
-    ? new Date(initialDateParam)
-    : new Date();
+  const initialDateParam = searchParams.get('date');
+  const initialDate = initialDateParam ? new Date(initialDateParam) : new Date();
 
   // Get initial time slot from URL parameters if available
   const initialData: Partial<ReservationFormData> = {};
-  if (searchParams.get("start") && searchParams.get("end")) {
-    initialData.start_time = searchParams.get("start")!;
-    initialData.end_time = searchParams.get("end")!;
+  if (searchParams.get('start') && searchParams.get('end')) {
+    initialData.start_time = searchParams.get('start')!;
+    initialData.end_time = searchParams.get('end')!;
   }
 
   // Fetch customers and initial time slots data on mount
@@ -42,8 +40,8 @@ export default function NewReservationPage() {
 
       try {
         // If user is an admin, fetch the customer list
-        if (role === "admin") {
-          const customersResponse = await get<{ data: User[] }>("/api/users");
+        if (role === 'admin') {
+          const customersResponse = await get<{ data: User[] }>('/api/users');
 
           if (customersResponse.error) {
             setError(customersResponse.error);
@@ -77,8 +75,7 @@ export default function NewReservationPage() {
           setAvailableTimeSlots(availabilityResponse.data.data);
         }
       } catch (err: unknown) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to fetch required data";
+        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch required data';
         setError(errorMessage);
       } finally {
         setIsLoading(false);
@@ -95,14 +92,14 @@ export default function NewReservationPage() {
     data: ReservationFormData
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      const response = await fetch("/api/reservations", {
-        method: "POST",
+      const response = await fetch('/api/reservations', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...data,
-          status: "confirmed",
+          status: 'confirmed',
         }),
       });
 
@@ -111,7 +108,7 @@ export default function NewReservationPage() {
       if (!response.ok) {
         return {
           success: false,
-          error: responseData.error || "Failed to create reservation",
+          error: responseData.error || 'Failed to create reservation',
         };
       }
 
@@ -122,8 +119,7 @@ export default function NewReservationPage() {
 
       return { success: true };
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "An unexpected error occurred";
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
       return {
         success: false,
         error: errorMessage,
@@ -135,28 +131,20 @@ export default function NewReservationPage() {
     <DashboardLayout>
       <div className="mb-6">
         <div className="flex items-center mb-4">
-          <Link
-            href="/dashboard/reservations"
-            className="text-blue-600 hover:text-blue-800 mr-2"
-          >
+          <Link href="/dashboard/reservations" className="text-blue-600 hover:text-blue-800 mr-2">
             ← Back to Reservations
           </Link>
         </div>
 
         <h1 className="text-2xl font-bold mb-2">Create New Reservation</h1>
         <p className="text-gray-500">
-          Fill out the form below to create a new reservation. Select an
-          available time slot from the calendar.
+          Fill out the form below to create a new reservation. Select an available time slot from
+          the calendar.
         </p>
       </div>
 
       {error && (
-        <Alert
-          variant="error"
-          title="Error"
-          className="mb-6"
-          onClose={() => setError(null)}
-        >
+        <Alert variant="error" title="Error" className="mb-6" onClose={() => setError(null)}>
           {error}
         </Alert>
       )}

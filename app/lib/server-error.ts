@@ -1,12 +1,7 @@
 // Server-side error handling utilities - no 'use client' directive
 
-import {
-  ApiError,
-  ValidationError,
-  AuthError,
-  NotFoundError,
-} from "@/app/lib/errors/common";
-import { NextResponse } from "next/server";
+import { ApiError, ValidationError, AuthError, NotFoundError } from '@/app/lib/errors/common';
+import { NextResponse } from 'next/server';
 
 /**
  * Format error for API responses
@@ -49,7 +44,7 @@ export function formatErrorResponse(error: unknown) {
   }
 
   return {
-    error: "An unknown error occurred",
+    error: 'An unknown error occurred',
     statusCode: 500,
   };
 }
@@ -57,10 +52,7 @@ export function formatErrorResponse(error: unknown) {
 /**
  * Create a safe wrapper for API handlers to catch and format errors
  */
-export function withErrorHandling<
-  Args extends unknown[],
-  ReturnType extends Response
->(
+export function withErrorHandling<Args extends unknown[], ReturnType extends Response>(
   handler: (...args: Args) => Promise<ReturnType>
 ): (...args: Args) => Promise<ReturnType | NextResponse> {
   return async (...args: Args) => {

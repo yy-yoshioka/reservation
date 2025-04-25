@@ -32,7 +32,7 @@ export default function ReservationList({
   className,
 }: ReservationListProps) {
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn('space-y-4', className)}>
       {isLoading ? (
         <div className="flex justify-center items-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
@@ -50,7 +50,7 @@ export default function ReservationList({
               />
             ))}
           </div>
-          
+
           {totalPages > 1 && onPageChange && (
             <div className="flex justify-center mt-8">
               <Pagination
@@ -62,9 +62,7 @@ export default function ReservationList({
           )}
         </>
       ) : (
-        <div className="flex justify-center items-center py-8 text-gray-500">
-          {emptyMessage}
-        </div>
+        <div className="flex justify-center items-center py-8 text-gray-500">{emptyMessage}</div>
       )}
     </div>
   );

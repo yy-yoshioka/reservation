@@ -15,23 +15,25 @@ export default function DashboardPage() {
   const [upcomingReservations, setUpcomingReservations] = useState<Reservation[]>([]);
   const [recentReservations, setRecentReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // Fetch reservations on component mount
   useEffect(() => {
     const fetchReservations = async () => {
       setIsLoading(true);
-      
+
       try {
         // Fetch upcoming reservations
-        const upcomingResponse = await get<{ data: Reservation[] }>('/api/reservations?status=confirmed&startDate=' + new Date().toISOString() + '&limit=3');
-        
+        const upcomingResponse = await get<{ data: Reservation[] }>(
+          '/api/reservations?status=confirmed&startDate=' + new Date().toISOString() + '&limit=3'
+        );
+
         if (upcomingResponse.data) {
           setUpcomingReservations(upcomingResponse.data.data || []);
         }
-        
+
         // Fetch recent reservations
         const recentResponse = await get<{ data: Reservation[] }>('/api/reservations?limit=3');
-        
+
         if (recentResponse.data) {
           setRecentReservations(recentResponse.data.data || []);
         }
@@ -41,12 +43,12 @@ export default function DashboardPage() {
         setIsLoading(false);
       }
     };
-    
+
     if (user) {
       fetchReservations();
     }
   }, [user]);
-  
+
   // Statistics data (can be replaced with actual API calls later)
   const stats = [
     {
@@ -74,16 +76,17 @@ export default function DashboardPage() {
       positive: true,
     },
   ];
-  
+
   return (
     <DashboardLayout>
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-2">Dashboard</h1>
         <p className="text-gray-500">
-          Welcome back, {user?.user_metadata?.first_name || 'User'}! Here&apos;s an overview of your reservations.
+          Welcome back, {user?.user_metadata?.first_name || 'User'}! Here&apos;s an overview of your
+          reservations.
         </p>
       </div>
-      
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {stats.map((stat, index) => (
@@ -91,17 +94,22 @@ export default function DashboardPage() {
             <h3 className="text-gray-500 text-sm font-medium">{stat.title}</h3>
             <p className="text-2xl font-bold mt-1">{stat.value}</p>
             {stat.change && (
-              <p className={`text-xs mt-1 ${
-                stat.positive === true ? 'text-green-600' : 
-                stat.positive === false ? 'text-red-600' : 'text-gray-500'
-              }`}>
+              <p
+                className={`text-xs mt-1 ${
+                  stat.positive === true
+                    ? 'text-green-600'
+                    : stat.positive === false
+                      ? 'text-red-600'
+                      : 'text-gray-500'
+                }`}
+              >
                 {stat.change}
               </p>
             )}
           </Card>
         ))}
       </div>
-      
+
       {/* Quick Actions */}
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
@@ -110,23 +118,29 @@ export default function DashboardPage() {
             <Button fullWidth>New Reservation</Button>
           </Link>
           <Link href="/dashboard/calendar">
-            <Button fullWidth variant="outline">View Calendar</Button>
+            <Button fullWidth variant="outline">
+              View Calendar
+            </Button>
           </Link>
           <Link href="/dashboard/reservations">
-            <Button fullWidth variant="outline">All Reservations</Button>
+            <Button fullWidth variant="outline">
+              All Reservations
+            </Button>
           </Link>
         </div>
       </div>
-      
+
       {/* Upcoming Reservations */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Upcoming Reservations</h2>
           <Link href="/dashboard/reservations?status=confirmed">
-            <Button variant="outline" size="sm">View All</Button>
+            <Button variant="outline" size="sm">
+              View All
+            </Button>
           </Link>
         </div>
-        
+
         {isLoading ? (
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
@@ -156,16 +170,18 @@ export default function DashboardPage() {
           </Card>
         )}
       </div>
-      
+
       {/* Recent Reservations */}
       <div>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Recent Reservations</h2>
           <Link href="/dashboard/reservations">
-            <Button variant="outline" size="sm">View All</Button>
+            <Button variant="outline" size="sm">
+              View All
+            </Button>
           </Link>
         </div>
-        
+
         {isLoading ? (
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
