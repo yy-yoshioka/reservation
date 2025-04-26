@@ -6,17 +6,19 @@ import Link from 'next/link';
 import DashboardLayout from '@/app/components/layouts/DashboardLayout';
 import Button from '@/app/components/ui/Button';
 import ReservationList from '@/app/components/reservations/ReservationList';
-import ReservationFilter, { ReservationFilters } from '@/app/components/reservations/ReservationFilter';
+import ReservationFilter, {
+  ReservationFilters,
+} from '@/app/components/reservations/ReservationFilter';
 import Alert from '@/app/components/ui/Alert';
-import { get, del } from '@/app/lib/api';
+import { get } from '@/app/lib/api';
 import { Reservation } from '@/app/types';
 import { useAuth } from '@/app/hooks/useAuth';
 
 export default function ReservationsPage() {
-  const { role } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,40 +29,40 @@ export default function ReservationsPage() {
     status: searchParams.get('status') || '',
     startDate: searchParams.get('startDate') || '',
     endDate: searchParams.get('endDate') || '',
-    onlyMine: false,
+    onlyMine: user !== null,
   });
-  
+
   // Fetch reservations on component mount and when filters or page changes
   useEffect(() => {
     const fetchReservations = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
         // Build query parameters
         const queryParams = new URLSearchParams();
         queryParams.append('page', currentPage.toString());
         queryParams.append('limit', '9'); // Show 9 reservations per page
-        
+
         if (filters.status) {
           queryParams.append('status', filters.status);
         }
-        
+
         if (filters.startDate) {
           queryParams.append('startDate', new Date(filters.startDate).toISOString());
         }
-        
+
         if (filters.endDate) {
           // Set the end date to the end of the day
           const endDate = new Date(filters.endDate);
           endDate.setHours(23, 59, 59, 999);
           queryParams.append('endDate', endDate.toISOString());
         }
-        
+
         if (filters.onlyMine) {
           queryParams.append('onlyMine', 'true');
         }
-        
+
         // Fetch reservations
         const response = await get<{
           data: Reservation[];
@@ -71,71 +73,70 @@ export default function ReservationsPage() {
             totalPages: number;
           };
         }>(`/api/reservations?${queryParams.toString()}`);
-        
+
         if (response.error) {
           setError(response.error);
           return;
         }
-        
+
         if (response.data) {
           setReservations(response.data.data);
           setTotalPages(response.data.pagination.totalPages);
         }
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch reservations');
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch reservations';
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
     };
-    
+
     fetchReservations();
   }, [currentPage, filters]);
-  
+
   // Handle filter changes
   const handleFilterChange = (newFilters: ReservationFilters) => {
     setFilters(newFilters);
     setCurrentPage(1); // Reset to first page when filters change
   };
-  
+
   // Handle pagination
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  
+
   // Handle reservation cancellation
   const handleCancelReservation = async (id: string) => {
     try {
       // Cancel the reservation (update status to 'cancelled')
-      const response = await put<{ data: Reservation }>(
-        `/api/reservations/${id}`,
-        { status: 'cancelled' }
-      );
-      
+      const response = await put(`/api/reservations/${id}`, {
+        status: 'cancelled',
+      });
+
       if (response.error) {
         setError(response.error);
         return;
       }
-      
+
       // Update the local state
       setReservations((prev) =>
         prev.map((reservation) =>
-          reservation.id === id
-            ? { ...reservation, status: 'cancelled' }
-            : reservation
+          reservation.id === id ? { ...reservation, status: 'cancelled' } : reservation
         )
       );
-      
+
       setSuccess('Reservation cancelled successfully');
-      
+
       // Clear success message after 3 seconds
       setTimeout(() => {
         setSuccess(null);
       }, 3000);
-    } catch (err: any) {
-      setError(err.message || 'Failed to cancel reservation');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to cancel reservation';
+      setError(errorMessage);
     }
   };
-  
+
   return (
     <DashboardLayout>
       <div className="mb-6">
@@ -149,31 +150,21 @@ export default function ReservationsPage() {
           View and manage all your reservations. Use the filters to find specific reservations.
         </p>
       </div>
-      
+
       {error && (
-        <Alert
-          variant="error"
-          onClose={() => setError(null)}
-          className="mb-4"
-        >
+        <Alert variant="error" onClose={() => setError(null)} className="mb-4">
           {error}
         </Alert>
       )}
-      
+
       {success && (
-        <Alert
-          variant="success"
-          onClose={() => setSuccess(null)}
-          className="mb-4"
-        >
+        <Alert variant="success" onClose={() => setSuccess(null)} className="mb-4">
           {success}
         </Alert>
       )}
-      
-      <ReservationFilter
-        onFilterChange={handleFilterChange}
-      />
-      
+
+      <ReservationFilter onFilterChange={handleFilterChange} />
+
       <ReservationList
         reservations={reservations}
         onCancelReservation={handleCancelReservation}
@@ -190,7 +181,7 @@ export default function ReservationsPage() {
 }
 
 // Helper function for PUT requests (used for cancellation)
-const put = async<T>(url: string, body: any, options?: RequestInit): Promise<{ data?: T; error?: string }> => {
+const put = async (url: string, body: Record<string, unknown>, options?: RequestInit) => {
   try {
     const response = await fetch(url, {
       method: 'PUT',
@@ -210,10 +201,11 @@ const put = async<T>(url: string, body: any, options?: RequestInit): Promise<{ d
       };
     }
 
-    return { data: data as T };
-  } catch (error: any) {
+    return { data };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return {
-      error: error.message || 'Unknown error occurred',
+      error: errorMessage,
     };
   }
 };
